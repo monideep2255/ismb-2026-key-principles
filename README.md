@@ -2,11 +2,19 @@
 
 Thirteen foundational principles for agentic AI and knowledge graphs in biomedicine, synthesized from [ISMB 2026](https://www.iscb.org/ismb2026/home) (Intelligent Systems for Molecular Biology, ISCB's flagship conference, July 13-16, 2026).
 
-Live page: https://monideep2255.github.io/ismb-2026-key-principles/
+Live cheat sheet: https://monideep2255.github.io/ismb-2026-key-principles/
+
+## Three ways to read this
+
+The same 66 talks, at three depths. Pick the one that fits the time you have:
+
+- Cheat sheet (5 minutes): https://monideep2255.github.io/ismb-2026-key-principles/ - the 13 principles on one page, color-coded by theme, with an interconnection diagram.
+- Website (about 30 minutes): https://monideep2255.github.io/ismb-2026-key-principles/website/ - the full synthesis as a single readable page, longer than the cheat sheet and lighter than the book.
+- Book (deep read): [book/](book/) - a 17-chapter first-principles book covering all 66 talks across 5 parts, each chapter citing its source talks inline. Start at [book/README.md](book/README.md).
 
 ## What this is
 
-A single-page synthesis of 13 foundational principles for agentic AI and knowledge graphs in biomedicine, drawn from 66 talks across 5 days at ISMB 2026. Color-coded by theme (technical foundation, organizational approach, people and governance) with an interconnection diagram showing how the principles relate, and each principle cited back to the book chapter that supports it.
+A synthesis of 13 foundational principles for agentic AI and knowledge graphs in biomedicine, drawn from 66 talks across 5 days at ISMB 2026. Color-coded by theme (technical foundation, organizational approach, people and governance) with an interconnection diagram showing how the principles relate, and each principle cited back to the book chapter that supports it.
 
 ## What this is not
 

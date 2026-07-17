@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI and knowledge graphs at ISMB 2026: a synthesis</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+/* Reset and base */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #2c5282;
+  --accent-light: #ebf4ff;
+  --bg: #fafafa;
+  --text: #1a202c;
+  --text-muted: #4a5568;
+  --border: #e2e8f0;
+  --code-bg: #f0f0f0;
+  --table-stripe: #f7fafc;
+  --nav-bg: #1a202c;
+  --nav-text: #cbd5e0;
+  --nav-active: #ebf4ff;
+  --nav-hover: #2d3748;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+}
+
+.header .subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Navigation bar */
+.nav-bar {
+  background: var(--nav-bg);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  border-bottom: 2px solid var(--accent);
+}
+
+.nav-group {
+  position: relative;
+}
+
+.nav-group-label {
+  display: block;
+  padding: 0.7rem 1rem;
+  color: var(--nav-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-group-label:hover,
+.nav-group.active > .nav-group-label {
+  background: var(--nav-hover);
+  color: #fff;
+}
+
+.nav-group.has-active-chapter > .nav-group-label {
+  color: #fff;
+  background: rgba(66, 153, 225, 0.25);
+  border-bottom: 2px solid #4299e1;
+}
+
+.nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--nav-bg);
+  min-width: 280px;
+  border: 1px solid #2d3748;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  z-index: 200;
+}
+
+.nav-group:hover .nav-dropdown,
+.nav-group.open .nav-dropdown {
+  display: block;
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--nav-text);
+  text-decoration: none;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.nav-dropdown a:hover {
+  background: var(--nav-hover);
+  color: #fff;
+}
+
+.nav-dropdown a.active {
+  background: rgba(66, 153, 225, 0.15);
+  border-left-color: #4299e1;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Content area */
+.content {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+/* Chapter sections */
+.chapter {
+  display: none;
+}
+
+.chapter.active {
+  display: block;
+}
+
+.chapter-number {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.part-heading {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+/* Typography */
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1rem;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.8rem 0 0.6rem;
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.4rem 0 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+/* Lists */
+ul, ol {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+li > ul, li > ol {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+tr:nth-child(even) { background: var(--table-stripe); }
+tr:hover { background: #edf2f7; }
+
+/* Code */
+code {
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--code-bg);
+  padding: 1rem 1.2rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Mermaid */
+.mermaid {
+  text-align: center;
+  padding: 1rem 0;
+  margin: 1rem 0 1.5rem;
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Sources section */
+.sources {
+  background: #f7fafc;
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem 1rem;
+  border-radius: 0 4px 4px 0;
+  margin: 1.5rem 0;
+}
+
+.sources h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.sources ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.sources li {
+  font-size: 0.88rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Prev/Next navigation */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  gap: 1rem;
+}
+
+.chapter-nav-btn {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  max-width: 45%;
+}
+
+.chapter-nav-btn:hover {
+  background: #dbeafe;
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.chapter-nav-btn.prev {
+  text-align: left;
+}
+
+.chapter-nav-btn.next {
+  text-align: right;
+  margin-left: auto;
+}
+
+.chapter-nav-btn .label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.chapter-nav-btn .title {
+  font-weight: 600;
+}
+
+.chapter-nav-spacer {
+  flex: 1;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+/* Print */
+@media print {
+  .nav-bar { display: none !important; }
+  .chapter-nav { display: none !important; }
+  .chapter { display: block !important; page-break-before: always; }
+  .chapter:first-child { page-break-before: avoid; }
+  .content { max-width: 100%; padding: 0; }
+  .mermaid { page-break-inside: avoid; }
+  table { page-break-inside: avoid; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .header {
+    padding: 1.5rem 1rem 1rem;
+  }
+  .header h1 {
+    font-size: 1.4rem;
+  }
+  .nav-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-dropdown {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    border-radius: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .content {
+    padding: 1.5rem 1rem 3rem;
+  }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.05rem; }
+  table { font-size: 0.8rem; }
+  th, td { padding: 0.4rem 0.5rem; }
+  .chapter-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .chapter-nav-btn {
+    max-width: 100%;
+  }
+}
+</style>
+<body>
+
+<div class="header">
+  <h1>Agentic AI and knowledge graphs at ISMB 2026: a synthesis</h1>
+  <p class="subtitle">Synthesized from 66 talks at ISMB 2026, July 13-16, 2026</p>
+</div>
+
+<nav class="nav-bar" id="nav-bar">
+  <div class="nav-group">
+    <button class="nav-group-label">Part 1: The agentic AI core</button>
+    <div class="nav-dropdown">
+      <a href="#" data-chapter="1">Ch 1: Multi-agent orchestration</a>
+      <a href="#" data-chapter="2">Ch 2: Grounding the agent</a>
+      <a href="#" data-chapter="3">Ch 3: Proving it works</a>
+      <a href="#" data-chapter="4">Ch 4: The closing vision</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-group-label">Part 2: Knowledge graphs as infrastructure</button>
+    <div class="nav-dropdown">
+      <a href="#" data-chapter="5">Ch 5: Ontologies and schemas</a>
+      <a href="#" data-chapter="6">Ch 6: Registries, provenance, and quality control</a>
+      <a href="#" data-chapter="7">Ch 7: Structured knowledge in a genAI world</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-group-label">Part 3: Graphs as prediction engines</button>
+    <div class="nav-dropdown">
+      <a href="#" data-chapter="8">Ch 8: Embeddings that encode biological context</a>
+      <a href="#" data-chapter="9">Ch 9: Graphs that predict function and interaction</a>
+      <a href="#" data-chapter="10">Ch 10: The limits of network prediction</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-group-label">Part 4: Open, trustworthy, reusable science</button>
+    <div class="nav-dropdown">
+      <a href="#" data-chapter="11">Ch 11: FAIR data infrastructure and metadata standards</a>
+      <a href="#" data-chapter="12">Ch 12: Consent, licensing, and sensitive data</a>
+      <a href="#" data-chapter="13">Ch 13: AI in the curation and quality pipeline</a>
+      <a href="#" data-chapter="14">Ch 14: The closing culture debate</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-group-label">Part 5: The bigger picture</button>
+    <div class="nav-dropdown">
+      <a href="#" data-chapter="15">Ch 15: The keynote arc</a>
+      <a href="#" data-chapter="16">Ch 16: Methods and infrastructure</a>
+      <a href="#" data-chapter="17">Ch 17: Risk and money</a>
+    </div>
+  </div>
+</nav>
+
+<div class="content">
+<!-- ============================================================ -->
+<!-- CHAPTER 1 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-1" data-chapter="1">
+<div class="part-heading">Part 1: The agentic AI core</div>
+<span class="chapter-number">Chapter 1</span>
+<h2>Multi-agent orchestration, architectures for teams of specialist agents</h2>
+
+<h3>What is it?</h3>
+<p>A multi-agent system splits one big biomedical question into smaller sub-questions and hands each one to a specialist AI agent with its own tools, its own data, and its own narrow job. A supervisor agent decomposes the question, routes the pieces, and reassembles the specialists' answers into one response. Nobody, human or model, tries to hold the whole problem in one head.</p>
+<p>Think of it like a hospital. You do not walk in and describe your symptoms to one doctor who is also the radiologist, the pharmacist, and the lab technician. A triage nurse (the supervisor) routes you to a cardiologist for your heart, a separate lab for your bloodwork, and a pharmacist for your prescription. Each specialist knows their domain deeply and has the tools for it. The triage nurse's job is routing and integration, not medicine.</p>
+
+<h3>Why does it exist?</h3>
+<p>Biomedical discovery evidence is scattered across incompatible domains. Drug discovery evidence alone spans statistical genetics, functional genomics, chemistry, pathway biology, and clinical trial data. No single model, and no single person, holds all of that competently. Three talks from ISMB 2026 built systems around this fact directly.</p>
+<p>The Virtual Biotech (Harrison Zhang, MLCSB) organized a team of agents the way a real drug discovery company organizes people: a Chief Scientific Officer (CSO) agent that receives a scientific query, splits it into sub-questions, and delegates each to a domain-specialized scientist agent covering statistical genetics, functional genomics, pathways and interactions, cheminformatics, disease biology, and clinical data. LungChat (Pankaj Rajdeo, MLCSB) did the same for multi-omics: a supervisor agent breaks a plain-English question into parallel sub-tasks for four specialists, Single-Cell, Spatial Omics, Research, and Atlas, each grounded in a curated library of bioinformatics tools. Chorus (Luca Pinello, Monday) solved a narrower version of the same problem: dozens of DNA-to-function prediction models exist, each with different dependencies, input sizes, and output formats, and comparing them by hand takes heroic engineering. Chorus wraps each one behind a single interface so an agent can call any of them the same way.</p>
+<p>The deeper reason this pattern exists: a single agent asked to do everything either specializes badly, because it is a generalist stretched thin, or specializes well but slowly, because it must load a huge, mixed context for every step. Splitting by domain fixes both. Each specialist's context stays small and relevant. The supervisor's context stays small too, because it only sees sub-task results, not raw data.</p>
+
+<h3>How does it work?</h3>
+
+<h4>The supervisor-specialist pattern</h4>
+<p>Both the Virtual Biotech and LungChat follow the same shape: one orchestrator that decomposes and integrates, several specialists that retrieve and reason within a bounded domain.</p>
+
+<div class="mermaid">
+flowchart TD
+    Q[User question] --> S[Supervisor agent]
+    S --> A[Specialist: genetics]
+    S --> B[Specialist: chemistry]
+    S --> C[Specialist: pathways]
+    S --> D[Specialist: clinical data]
+    A --> I[Supervisor integrates]
+    B --> I
+    C --> I
+    D --> I
+    I --> R[Answer to user]
+</div>
+
+<p>The Virtual Biotech's CSO agent ran this at real scale in one demo: more than 37,000 clinical-trialist agents curated outcomes from 55,984 clinical trials. The finding that came out the other end was concrete and checkable: drugs targeting cell-type-specific genes were 40 percent more likely to advance from Phase I to Phase II trials, 48 percent more likely to reach market, and had 32 percent lower adverse-event rates. A human scientist stayed in the loop throughout, reviewing the CSO's synthesis rather than approving each of the 37,000 sub-agent runs individually.</p>
+<p>LungChat measured what the supervisor layer actually bought, instead of just building it and asserting it worked. Across 1,080 ablation tests, meaning the hierarchical design was tested against a flat, single-agent version doing the same job, the supervisor-plus-specialist structure cut token use by roughly half and improved refusal of out-of-scope questions by 35 percentage points. Applied to idiopathic pulmonary fibrosis, LungChat's specialists recovered known disease markers and ranked a drug called Saracatinib as the top repurposing candidate, matching an independent clinical trial's choice. Each of LungChat's four specialists draws from a curated library of 51 bioinformatics tools, selected by combining meaning-based search with exact keyword matching so the right tool gets picked even when the query does not use the tool's exact name.</p>
+<p>The 35-point refusal improvement is the number worth sitting with. A flat agent, asked something outside its competence, tends to answer anyway because nothing in its architecture forces it to notice the boundary. A supervisor that routes work to bounded specialists has a natural place to say "none of my specialists cover this" and refuse instead of guessing.</p>
+
+<h4>Wrapping specialist tools behind one interface</h4>
+<p>Chorus solves a different half of the same problem: not "which specialist should answer this," but "how does an agent call a specialist tool without needing to understand that tool's internals." Sequence-to-function models like Enformer, Borzoi, and AlphaGenome each predict what a stretch of DNA does, but they live in different software worlds with different input sizes and dependencies.</p>
+<p>Chorus treats each model as an oracle: something that takes genomic coordinates and returns a prediction, with the mess hidden behind one Python interface. Each oracle runs in its own isolated environment, which is both a dependency fix and a security posture, since a broken or compromised model cannot reach outside its own sandbox. Chorus then exposes all seven oracles as a Model Context Protocol (MCP) server, a standard way to hand tools to an AI agent, so a plain-language request like "score this variant across three oracles in liver cell types" lets the agent pick the right oracles, match cell-type tracks, and synthesize a report showing where the oracles agree.</p>
+
+<div class="mermaid">
+flowchart LR
+    U[Agent request] --> M[MCP server]
+    M --> O1[Oracle: Enformer]
+    M --> O2[Oracle: Borzoi]
+    M --> O3[Oracle: AlphaGenome]
+    O1 --> C[Convergent evidence report]
+    O2 --> C
+    O3 --> C
+</div>
+
+<h4>The freedom axis: how much should an agent decide on its own</h4>
+<p>Kuan-lin Huang's talk gave the design lens that ties the other two together. The question is not "should this be an agent," it is "how much freedom should this agent have," because more freedom buys flexibility and also buys entropy, meaning more randomness and less control.</p>
+<p>Huang lays out three tiers, each with a working example from his own group. Low freedom covers deterministic workflows where the correct answer is fixed and the only job is speed: his team rebuilt a genomics variant-effect tool and reported it annotating a full clinical whole-genome benchmark of over four million variants in about 86 seconds, a speedup of up to 130 times over the standard tool, with identical results verified on a shared subset. Medium freedom covers tasks with many valid answers, such as drug repurposing, where you let the agent search but you define what "best" means, combining binding, selectivity, and real-world evidence, then re-rank candidates across millions of options. High freedom covers AI co-scientists that plan, gather data, write code, and report findings on their own, which means they can also fabricate findings on their own. Huang tied that tier to an external check: an agent's proposed findings were validated against a large real-world replication signal, backing solid, non-retracted papers at markedly higher odds than retracted ones, at roughly two dollars per target.</p>
+
+<div class="mermaid">
+flowchart TD
+    L["Low freedom: deterministic, fast, one right answer"] --> M["Medium freedom: many valid answers, you define best"]
+    M --> H["High freedom: agent plans and hypothesizes on its own"]
+    L -.->|risk| R1[Low: speed only]
+    M -.->|risk| R2[Moderate: ranking bias]
+    H -.->|risk| R3[High: fabrication, needs external verification]
+</div>
+
+<p>The pattern across all three tiers is the same design rule: freedom without a matching verification mechanism is the failure mode. Low freedom gets its verification for free, because the answer is deterministic. Medium freedom needs an explicit definition of "best." High freedom needs an external, cheap, scalable check, which is exactly what the replication-odds test provided.</p>
+
+<h4>The infrastructure stack underneath the pattern</h4>
+<p>Everything above assumes the agent already has models, tools, data processing, and a deployment path to call on. NVIDIA's BioNeMo talk (Chris Dallago, Tuesday, Tech Track) is the vendor's answer to where that stack comes from: an "AI Scientist Enablement Stack" that bundles domain-specific models, scientific tools, accelerated data processing, and production deployment under one roof, then lets an agentic layer orchestrate a design-test-learn loop on top, propose a design, test it against models or tools, learn from the result, iterate.</p>
+<p>The verified numbers are the useful part. In testing with GPT-4, task completion rose from 57.1 percent to 100 percent once the agent had access to BioNeMo's agent-ready tool interfaces, which document each model's purpose, inputs, parameters, outputs, and failure modes so the agent can select and invoke the right tool without guessing. Token efficiency roughly doubled alongside it, about twice as many passing assertions per 1,000 tokens. That is a concrete, load-bearing claim: an agent's tool-calling accuracy tracks how well the tool interface documents itself, not just how capable the underlying model is.</p>
+<p>This is the commercial, closed-stack version of the same design-test-learn loop the rest of this chapter builds from open pieces. The transferable frame is the loop itself, plus the reminder that agents need a stack (models, tools, data, deployment), not just a prompt. The tradeoff to watch is vendor lock-in: BioNeMo's stack is proprietary infrastructure, where an open, FAIR, provenance-first approach is a real differentiator, not just a philosophical preference.</p>
+
+<h3>What this means for you</h3>
+<p>Agentic search v4 is, at its core, a supervisor deciding what to retrieve and a set of specialists (retrieval over literature, retrieval over a knowledge graph, tool calls to external databases) doing the retrieving. The three systems in this chapter are working proof that the pattern holds up at scale, not just in a diagram.</p>
+<p>Four design decisions to lift directly. First, keep specialists scoped to a domain and a fixed toolset, the way LungChat's four specialists each own 51 tools and the Virtual Biotech's scientist agents each own one discipline. That is least-privilege applied to agent design, and it is the same principle your ai-security-standards rule already requires: an agent inherits the reach of the tools you give it, so scope the reach to exactly the job. Second, measure what the supervisor layer buys with an ablation, the way LungChat did. If you ever build a flat, single-agent version of a v4 feature as a baseline, you get a real number for whether the supervisor layer is worth its complexity, not just an assumption that it is. Third, use Huang's freedom axis explicitly when you design a new v4 capability: is this deterministic retrieval and formatting (low freedom, should be fast and boring), ranking or synthesis with several valid answers (medium freedom, needs an explicit rubric), or open-ended reasoning that could fabricate a connection (high freedom, needs a cheap external verification loop before you trust its output). That axis is also your goal-contracts verify surface, restated for agent autonomy instead of task completion. Fourth, take BioNeMo's tool-documentation finding seriously: the 57 to 100 percent completion jump came entirely from documenting each tool's inputs, outputs, and failure modes for the agent, not from a bigger model. Every tool you expose to v4's specialists earns the same documentation before it earns a call.</p>
+<p>The open question worth watching, and one the Virtual Biotech writeup flags but does not fully answer, is how these systems validate the payload passing between the supervisor and each specialist. That is exactly the multi-agent schema gate your own production standards already require: every hop between agents needs a validated, bounded payload, or a malformed result from one specialist can silently corrupt the supervisor's synthesis.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Chorus: an agentic framework for comparative regulatory genomics with sequence-to-function oracles</td><td>Monday 15:40-16:00</td><td>Paper verified (via project repository, no standalone preprint yet)</td></tr>
+    <tr><td>The Virtual Biotech: a multi-agent AI framework</td><td>Wednesday 11:50-12:00</td><td>Paper verified</td></tr>
+    <tr><td>A conversational multi-agent AI framework for integrated multi-omics</td><td>Wednesday 12:00-12:10</td><td>Paper verified</td></tr>
+    <tr><td>How can AI agents help you advance biomedicine?</td><td>Wednesday 11:10-11:50</td><td>Paper verified (partial, only the low-freedom example has a standalone preprint)</td></tr>
+    <tr><td>Enabling agentic systems for life science discovery</td><td>Tuesday 12:20-13:00</td><td>Paper verified (vendor technical blog, no standalone preprint; foundational BioNeMo framework preprint cited separately)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 2 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-2" data-chapter="2">
+<div class="part-heading">Part 1: The agentic AI core</div>
+<span class="chapter-number">Chapter 2</span>
+<h2>Grounding the agent, retrieval, multi-hop reasoning, and evidence triangulation</h2>
+
+<h3>What is it?</h3>
+<p>Grounding is the discipline of tying every claim an agent makes back to a specific piece of evidence, and refusing to make claims that cannot be tied back that way. It is the difference between an agent that answers from what it half-remembers and an agent that answers from what it can point to. Four talks from ISMB 2026 attack different pieces of this problem: how do you know a citation actually supports the sentence it is attached to, how do you chain evidence across many sources to answer a question that needs several linked facts, how do you stop an agent from inventing the connective tissue between real facts, and how do you fuse a knowledge graph's structure with a language model's text understanding without expensive retraining.</p>
+
+<h3>Why does it exist?</h3>
+<p>A retrieval-augmented system, one that looks things up before answering instead of answering from memory, sounds solved: retrieve a passage, cite it, done. Halil Kilicoglu's talk on reading science at scale punctures that assumption with a number. Researchers manually checked over 3,000 citation instances across 100 highly cited biomedical papers and found close to 39 percent contained accuracy errors, meaning the citation existed but did not actually support the claim it was attached to. Even a strong language model model in a few-shot setting was good at confirming accurate citations but weak at catching errors, missing most of the citation problems that existed. Having a citation is not the same as having a citation that holds up.</p>
+<p>That gap gets worse the more hops a question needs. A single-hop question needs one fact from one source. A real biomedical question, "what drug class targets the protein that this disease-causing gene mutation disrupts," needs several linked facts pulled from different places, and each hop is another chance for retrieval to miss or for the model to bridge a gap with an invented connection instead of a retrieved one. eGoT and DrugAgent both exist because multi-hop reasoning is where naive retrieval-augmented generation breaks down, in different ways: eGoT attacks the retrieval side (how do you find and chain the right facts), DrugAgent attacks the reasoning side (how do you stop the model from fabricating the connection between facts it did retrieve). KLaR exists because a knowledge graph alone cannot express everything a passage of text can, and a language model alone cannot enforce a graph's explicit structural rules, so fusing them without expensive fine-tuning is its own open problem.</p>
+
+<h3>How does it work?</h3>
+
+<h4>The citation-integrity baseline</h4>
+<p>Kilicoglu's research program centers on checking whether a citation actually supports its claim, not just whether a citation exists. The reported baseline: a combined retrieval-plus-classification pipeline reached 0.59 micro-F1 on catching citation errors, while a general-purpose language model was strong on confirming correct citations but scored only 0.45 macro-F1 overall, meaning it missed most of the actual errors. This sets the floor any agentic search system should measure itself against: if a purpose-built citation-integrity classifier tops out around 0.59, an agent that merely attaches a citation without checking it is nowhere close to trustworthy.</p>
+
+<h4>eGoT: graph-of-thoughts over two databases</h4>
+<p>eGoT answers multi-hop questions by building two databases from a document corpus, a graph database that captures entities and relationships explicitly, and a vector database that captures text as embeddings for semantic similarity search, then reasoning over both with a structure called graph-of-thoughts: the reasoning steps themselves form a graph, not a single chain, so partial answers from different hops can merge instead of being forced into one linear path.</p>
+
+<div class="mermaid">
+flowchart TD
+    D[Document corpus] --> C[LLM construction pipeline]
+    C --> G[Graph database]
+    C --> V[Vector database]
+    Q[Multi-hop question] --> R[Graph-of-thoughts reasoning]
+    G --> R
+    V --> R
+    R --> A[Answer with provenance]
+</div>
+
+<p>The benchmark numbers give this some teeth. On MultiHopRAG, eGoT reached 75.50 percent precision and 79.10 percent accuracy, beating several strong retrieval baselines. On HotpotQA it reached 63.00 percent exact match and 71.11 percent F1, beating two other graph-based retrieval methods outright, though it was roughly tied with a third on exact match rather than winning cleanly, a correction worth noting since the framing in the room suggested a clean sweep. In two biomedical demos, answering expert questions on small cell lung cancer drawn from 1,046 PubMed Central papers, and surfacing a plausible link between lupus and UV exposure, the system's answers stayed traceable to the source papers throughout.</p>
+
+<h4>DrugAgent: triangulation as a hallucination gate</h4>
+<p>DrugAgent starts from a specific failure mode: an agent that pulls evidence from multiple sources can still invent the reasoning that connects them, producing a mechanistic claim that no single source actually supports. Its fix is structural, not a prompt instruction. Three independent agents each produce evidence about a drug-target interaction: one runs a machine-learning binding-affinity prediction, one runs multi-hop reasoning over a knowledge graph, one runs retrieval-augmented generation over PubMed. A reasoning module only composes a final claim when the three agree, an explicit cross-source consistency rule.</p>
+
+<div class="mermaid">
+flowchart LR
+    Q[Drug-target question] --> M[ML binding prediction]
+    Q --> K[Knowledge graph reasoning]
+    Q --> P[PubMed RAG]
+    M --> G{All three agree?}
+    K --> G
+    P --> G
+    G -->|yes| C[Claim asserted]
+    G -->|no| F[Claim withheld]
+</div>
+
+<p>Evaluated on 900 kinase drug-target pairs with an LLM-as-judge protocol, the full three-agent system was faithful to its input evidence in 98.8 percent of cases, with 98 percent label stability across repeated runs of the same question. The talk's own ablation removes one agent at a time and measures precision and recall of the resulting predictions, not a faithfulness breakdown by source count. Removing the knowledge graph agent, for instance, drops precision to 0.187 while recall rises, an ordinary precision and recall trade-off from losing a filtering source. This is worth flagging precisely: the striking claim that two-source agreement produces 15 to 20 percent unfaithful explanations while three-source agreement drops that to near zero does not appear in the paper as stated. What the paper actually supports is the directional finding, that the full triangulated system reaches 98.8 percent faithfulness, which is still strong evidence that requiring independent sources to agree before asserting a claim is a real hallucination defense, just not quantified the way the pre-briefing suggested.</p>
+
+<h4>KLaR: fusing a graph and a frozen language model</h4>
+<p>KLaR predicts missing links in a biomedical knowledge graph, for example a drug-target or disease-gene association the graph does not yet record, by fusing two views of the same neighborhood without fine-tuning a language model. For a query entity, a relational graph neural network encodes its local k-hop subgraph, capturing explicit structure. Separately, random-walk paths through that same subgraph are turned into sentences using templates, then embedded with an off-the-shelf, frozen sentence-embedding model, no fine-tuning, no external retrieval step. The two views are aligned and fused through a gated integration step, and a sparse mixture-of-experts decoder, which routes different interaction types to different specialized sub-models, scores candidate links.</p>
+
+<div class="mermaid">
+flowchart TD
+    E[Query entity] --> N[k-hop subgraph]
+    N --> GNN[Relational GNN structural view]
+    N --> W[Random-walk paths to text]
+    W --> F[Frozen sentence embeddings]
+    GNN --> I[Gated integration]
+    F --> I
+    I --> MoE[Sparse mixture-of-experts decoder]
+    MoE --> L[Scored candidate link]
+</div>
+
+<p>KLaR was published in Bioinformatics on July 7, 2026, and the mechanism description holds up against the publication. The specific PharmKG, HetioNet, and DTINet benchmark numbers referenced in the pre-briefing could not be independently confirmed, since the secondary source used to verify publication did not carry a results table, so those figures should be treated as unconfirmed rather than false.</p>
+
+<h3>What this means for you</h3>
+<p>Each of these four talks maps onto a specific gap in agentic search v4's grounding story, and none of them is optional if the goal is a system that earns trust rather than asserts it.</p>
+<p>Kilicoglu's number, 39 percent of citations in highly cited papers do not actually support their claims, is the argument for building a citation-integrity check as a distinct step from citation-attachment. Attaching a source is cheap. Verifying the source substantiates the specific sentence it is attached to is the actual grounding gate, and your nws-production-standards rule already names this: a deterministic accept-or-reject check, exact or substring match after normalization, never a fuzzy similarity threshold that can silently pass a near-miss.</p>
+<p>eGoT's two-database pattern, a graph database for explicit multi-hop traversal paired with a vector database for semantic retrieval, is close to a working blueprint for v4's own retrieval layer, since neither structure alone handles multi-hop reasoning well. Structuring the reasoning itself as a graph of steps rather than one linear chain is the specific design choice worth studying closely if v4 ever needs to merge partial evidence from different hops into one answer.</p>
+<p>DrugAgent's triangulation pattern, requiring independent sources to agree before a claim is asserted, is directly reusable as a design rule even though the specific ablation numbers from the pre-briefing do not hold up under verification. The corrected, verified number, 98.8 percent faithfulness for the full three-source system, is still a strong argument for gating claim assertion on cross-source agreement rather than trusting a single source. This is also a case study in why the research-verification step matters: the striking, quotable number was the wrong one, and the real number, less dramatic but grounded in the actual paper, is the one that should go into any design document.</p>
+<p>KLaR's frozen-embedding approach is the cheapest path to graph-plus-text fusion available in this batch of talks: no fine-tuning, no separate retrieval infrastructure, just a template-based textualization of graph paths embedded off the shelf. If v4 ever needs to let a language model reason over graph context without standing up a fine-tuning pipeline, this is the pattern to prototype first, precisely because it is the cheapest one that still worked in a published benchmark.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Reading science at scale: AI for biomedical discovery and trustworthy knowledge</td><td>Monday 11:00-11:40</td><td>Paper verified</td></tr>
+    <tr><td>eGoT: enhanced graph-of-thoughts for multi-hop knowledge retrieval and hypothesis generation in biomedicine</td><td>Monday 11:40-12:00</td><td>Paper verified</td></tr>
+    <tr><td>DrugAgent: explainable multi-agent reasoning for aggregating heterogeneous biomedical evidence</td><td>Monday 12:00-12:20</td><td>Paper verified (with a correction to the headline ablation numbers)</td></tr>
+    <tr><td>KLaR: fusing knowledge graphs and language models for biomedical target discovery</td><td>Monday 12:40-13:00</td><td>Paper verified (via secondary aggregator, specific benchmark numbers unconfirmed)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 3 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-3" data-chapter="3">
+<div class="part-heading">Part 1: The agentic AI core</div>
+<span class="chapter-number">Chapter 3</span>
+<h2>Proving it works, benchmarks, checkpoints, and applied evaluation</h2>
+
+<h3>What is it?</h3>
+<p>An agent that sounds confident is not the same as an agent that is right. This chapter covers five talks that each build a different piece of the machinery for telling the two apart: a benchmark that measures whether an "AI scientist" can find a real finding in real data, a benchmark built specifically to resist a model gaming it by having memorized the answer, an agent architecture that refuses to let unverified work compound, a system that tunes a pipeline's parameters and proves the tuning actually helped, and a method that generates useful features from messy metadata using a language model as the tool, not the judge.</p>
+
+<h3>Why does it exist?</h3>
+<p>Every talk in Chapter 1 made a claim about what its agent could do. None of those claims mean anything without a way to check them. That is the gap this chapter's five talks fill, each from a different angle.</p>
+<p>BAISBench and MedHopQA both exist because "the agent gave a plausible-sounding answer" is not evidence, and because two specific failure modes needed a fix. BAISBench's problem: existing tests for AI scientists either test reasoning with no real data attached, or grade a fixed analysis pipeline's output, neither of which resembles the actual job, starting from raw data and finding something true in it. MedHopQA's problem is different and sharper: a multi-hop question-answering benchmark is worthless if the model has already seen the answer during training, so the benchmark itself has to be built to resist contamination, not just to be hard.</p>
+<p>Agentomics exists because letting an agent write one long script and hope it works is how errors compound silently, the same failure mode that shows up whenever an agent's output becomes the next agent's input with no check in between. AutoTuneX exists because most bioinformatics tools ship with default parameters nobody tunes, and the ones that get tuned rarely get proof that the tuning helped, just an assertion that it does. The outcome-aware feature generation talk exists because unstructured study metadata, the free-text descriptions attached to a public dataset, is a real source of predictive signal that gets thrown away when every cross-study analysis has to hand-curate its own features from scratch.</p>
+
+<h3>How does it work?</h3>
+
+<h4>BAISBench: grading an AI scientist on the actual job</h4>
+<p>BAISBench sets two tasks on real single-cell transcriptomic data, gene expression measured one cell at a time. Task one is cell type annotation across 15 expert-labeled datasets: the agent has to correctly label what kind of cell each one is. Task two is scientific discovery, 193 multiple-choice questions built directly from the conclusions of 41 published single-cell studies, so the questions test whether the agent can reach the same finding the original researchers reached. Several AI-scientist systems were run through both tasks, and six graduate-level bioinformaticians did the same tasks to set a human baseline.</p>
+
+<div class="mermaid">
+flowchart TD
+    D[Real single-cell datasets] --> T1[Task 1: cell type annotation]
+    D --> T2[Task 2: 193 discovery questions]
+    T1 --> C[AI scientist systems]
+    T2 --> C
+    T1 --> H[Human baseline: 6 bioinformaticians]
+    T2 --> H
+    C --> R[Compare against human floor]
+    H --> R
+</div>
+
+<p>The result: current AI-scientist systems show substantial potential but fall short of fully autonomous discovery when measured against that human floor. The honest gap between "helps with the task" and "does the task independently" is the finding, not a footnote.</p>
+
+<h4>MedHopQA: building a benchmark that resists memorization</h4>
+<p>MedHopQA is 1,000 expert-curated, disease-centered, multi-hop question-answer pairs, each one requiring synthesis across at least two source articles rather than a single lookup. The construction pipeline is the interesting part: seed annotation, then augmentation, then blind triage, then iterative verification, then a final LLM-as-judge validation pass, a human-and-model pipeline built specifically to produce hard, verifiably multi-hop questions rather than easy ones dressed up to look hard.</p>
+
+<div class="mermaid">
+flowchart LR
+    S[Seed annotation] --> A[LLM augmentation]
+    A --> B[Blind triage]
+    B --> I[Iterative verification]
+    I --> J[LLM-as-judge validation]
+    J --> P[10,000-question pool]
+    P --> L[Scored subset hidden, answers withheld]
+</div>
+
+<p>The contamination defense is structural, not procedural: the 1,000 scored questions sit hidden inside a larger 10,000-question pool on a leaderboard with withheld answers, so a model cannot simply have memorized the answer key during training the way it might for a static, fully public benchmark. Gold answers are enriched with synonym sets from MONDO, NCBI Gene, and NCBI Taxonomy so that a correct answer phrased differently still scores as correct, concept-level scoring rather than exact-string scoring.</p>
+
+<h4>Agentomics: checkpoints instead of one long script</h4>
+<p>Agentomics is an autonomous agent that takes a biomedical dataset and builds a working machine learning model end to end: load data, try modeling strategies, train, validate, output a model. The design choice that makes it reliable is not a smarter model, it is structure. Instead of writing one large script and hoping it works, the agent only builds on top of code that has already passed a validation checkpoint, with a defined interface and a validated artifact required at every stage before the next stage is allowed to start.</p>
+
+<div class="mermaid">
+flowchart TD
+    L[Load data] --> V1{Valid?}
+    V1 -->|yes| M[Choose modeling strategy]
+    M --> V2{Valid?}
+    V2 -->|yes| Tr[Train]
+    Tr --> V3{Valid?}
+    V3 -->|yes| Va[Validate]
+    Va --> O[Output model]
+    V1 -->|no| X[Stop, do not proceed]
+    V2 -->|no| X
+    V3 -->|no| X
+</div>
+
+<p>Across 20 datasets spanning protein engineering, drug discovery, and regulatory genomics, Agentomics beat other agentic systems, including Biomni, in every domain tested, and matched or beat human-expert-built solutions on 11 of the 20 benchmarks. The checkpoint discipline is what earns that number: an error introduced at the data-loading stage cannot silently propagate into a trained model, because the pipeline will not advance past an unvalidated stage.</p>
+
+<h4>AutoTuneX: proving a tuned parameter actually helped</h4>
+<p>AutoTuneX automatically picks the best parameter settings for transcript-assembly software, tools like Scallop and StringTie that reconstruct full RNA transcripts from short RNA-seq reads, based on the specific sample being processed, instead of leaving everyone on untouched defaults. The pipeline runs in three steps. First, the apricot algorithm selects roughly 1,250 representative samples out of about 7,000 candidates. Second, a warm-start Bayesian optimization method, CAWarm-BO, finds the best parameter vector for each representative sample, spending its search budget where improvement is likely rather than trying every combination. Third, a contrastive-learning encoder embeds new samples into a latent space where samples that want similar parameters sit near each other, so a brand-new sample gets its parameters by finding its nearest neighbors in that space and transferring their settings.</p>
+
+<div class="mermaid">
+flowchart TD
+    C[About 7,000 candidate samples] --> R[Apricot: pick ~1,250 representative]
+    R --> B[CAWarm-BO: best parameters per sample]
+    B --> E[Contrastive-learned latent space]
+    N[New sample] --> E
+    E --> T[Nearest-neighbor parameter transfer]
+</div>
+
+<p>On the held-out SRA-test set of 1,588 samples, between 81.9 and 99 percent improved over defaults, depending on which assembler was used and how many candidate parameter sets were considered. On the smaller ENCODE65 benchmark, typical AUC gains were in the 2 to 25 percent range. That range matters because the headline "up to 600 percent" figure that circulated is a best-case single-sample outlier, not the typical result, and citing the outlier instead of the range would overstate what the method reliably delivers.</p>
+
+<h4>Outcome-aware feature generation from unstructured metadata</h4>
+<p>This talk addresses a narrower but common problem: public gene-expression studies come with free-text metadata, sample descriptions, condition labels, experimental notes, that carry real signal but are too unstructured to feed directly into a cross-study statistical model. The approach uses a language model to generate structured, outcome-aware features from that unstructured metadata, so a downstream cross-study transcriptomic analysis can use consistent, comparable features drawn from studies that were never designed to be compared. No public paper or preprint could be located for this specific method as of this writing; the description here is based on the conference abstract only, and any application of the technique should treat the mechanism as reported, not as independently verified against a full methods section.</p>
+
+<h3>What this means for you</h3>
+<p>This chapter is the evaluation discipline that turns agentic search v4 from a demo into something you can trust, and every talk in it maps onto a concrete piece of the eval-harness rule.</p>
+<p>BAISBench is close to a template for what a v4 acceptance test should look like: a frozen, real-data task, graded against a human baseline, not against the model's own confidence. If v4 ever claims a retrieval or synthesis capability, the honest version of that claim needs the same shape, a fixed test set with a known human floor to compare against, not an anecdote about one query that worked.</p>
+<p>MedHopQA's contamination-resistance design is the sharper lesson. A benchmark a model may have memorized during training is not measuring capability, it is measuring recall of the test itself. Any evaluation set you build for v4's own multi-hop retrieval needs the same structural defense: hide the scored subset inside a larger pool, withhold answers, and rotate or expand the pool over time so a future model version cannot simply have absorbed the fixed answer key.</p>
+<p>Agentomics's checkpoint discipline is directly reusable and already named in your own goal-contracts and self-eval-loop rules: never let an agent build on unverified output. If v4 chains retrieval into synthesis into a final answer, a validated artifact belongs between each stage, the same way Agentomics puts a validated model artifact between load, strategy, train, and validate. That is the concrete mechanism, not just the principle, for stopping an early retrieval error from silently becoming a confidently wrong final answer three stages later.</p>
+<p>AutoTuneX's discipline of proving the tuning helped, on a held-out test set, with the honest range reported rather than the outlier headline, is a caution as much as a pattern. If v4 ever tunes a retrieval or ranking parameter, whether that is a similarity threshold, a re-ranking weight, or a chunk size, report the range across a held-out set, not the single best case. The gap between AutoTuneX's real 2 to 25 percent typical gain and its circulated "up to 600 percent" framing is exactly the gap between a defensible engineering claim and a marketing one, and your own writing-style discipline of stating verified numbers rather than the more exciting unverified ones exists to prevent that same gap from opening up in your own documentation.</p>
+<p>The unstructured-metadata talk is a smaller but real idea worth borrowing: a language model can be the tool that turns messy free text into structured, comparable features, as long as something downstream checks the features it generates rather than trusting them blindly. That is the same grounding discipline from Chapter 2 applied to feature engineering instead of citation.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>MedHopQA: benchmarking multi-hop reasoning in LLM-based biomedical question answering with a disease-centered corpus</td><td>Monday 12:20-12:30</td><td>Paper verified (some result-section figures unconfirmed)</td></tr>
+    <tr><td>Benchmarking AI scientists for omics data-driven biological discovery</td><td>Wednesday 11:00-11:20</td><td>Paper verified</td></tr>
+    <tr><td>Agentomics</td><td>Wednesday 11:20-11:40</td><td>Paper verified</td></tr>
+    <tr><td>Data-driven AI system for learning how to run transcript assemblers</td><td>Wednesday 11:40-11:50</td><td>Paper verified (headline figure corrected from outlier to typical range)</td></tr>
+    <tr><td>Outcome-aware feature generation from unstructured metadata using LLMs for cross-study transcriptomic analysis</td><td>Monday 12:30-12:40</td><td>No public paper found (verified)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 4 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-4" data-chapter="4">
+<div class="part-heading">Part 1: The agentic AI core</div>
+<span class="chapter-number">Chapter 4</span>
+<h2>The closing vision, human-AI co-science</h2>
+
+<h3>What is it?</h3>
+<p>The closing keynote of ISMB 2026, delivered by Marinka Zitnik, argues for a specific and narrow definition of what an "AI scientist" should be: not a chatbot that answers biology questions fluently, but a system built and evaluated across three concrete capabilities, understanding disease mechanisms, discovering interventions, and reasoning about treatments, that partners with human researchers through a full discovery loop and is judged by whether its predictions survive contact with real experiments and real patients. This chapter gets more depth than the other three because it is the single talk in the whole conference closest to the shape of agentic search v4: a language model that reasons by calling curated tools and retrieving verifiable knowledge, rather than answering from what it memorized during training.</p>
+
+<h3>Why does it exist?</h3>
+<p>Most AI-for-biology tools stop at one narrow question. You ask, a model answers, and nothing connects that answer back to a real experiment, a real patient outcome, or the next question a scientist would actually ask. The keynote's framing is a direct critique of that pattern: a system that only sounds right is not the goal. A system whose outputs get checked in a lab, in a patient cohort, or against a blinded expert panel, and hold up, is the goal. That reframing matters because it changes what counts as evidence of success. Fluency is cheap. Surviving an experiment is not.</p>
+<p>The specific system inside the keynote that makes this concrete is TxAgent, an agent built for treatment reasoning, the hardest of the three capabilities Zitnik covers, because a real treatment decision has to weave together disease context, a patient's comorbidities, their current medications, and the sprawl of biomedical literature, all at once, with a wrong answer carrying real cost. TxAgent exists because no single fine-tuned model can hold that much shifting, source-specific knowledge in its weights reliably, so the answer has to come from retrieving and reasoning over live tools and live knowledge sources instead.</p>
+
+<h3>How does it work?</h3>
+
+<h4>Three capabilities, one discovery loop</h4>
+<p>Zitnik organizes the keynote around three capabilities that build on each other rather than existing as separate demos.</p>
+<p>Disease understanding starts from foundation models trained on multimodal relational data, meaning many different data types, genes, proteins, cells, patients, tied together as one graph rather than kept in separate tables. Because these models see relationships that no single dataset contains on its own, they surface disease mechanisms invisible to any one source. Zitnik reports hypotheses generated this way about Parkinson disease, bipolar disorder, and Alzheimer disease, each checked afterward in vitro, in vivo, and against the health trajectories of five million patients, an external validation step that is not optional set dressing but the actual claim to success.</p>
+<p>Intervention discovery is the next layer: the AI scientist searches enormous experimental spaces to find candidate therapeutic targets, predicts synthetic lethal interactions in cancer (pairs of genes where disabling both kills the cell but disabling either alone does not), and models how an individual patient's tumor might respond to immunotherapy.</p>
+<p>Treatment reasoning is the capability closest to agentic search v4, and it is where TxAgent lives.</p>
+
+<div class="mermaid">
+flowchart TD
+    F[Multimodal relational foundation model] --> DU[Disease understanding]
+    DU --> ID[Intervention discovery]
+    ID --> TR[Treatment reasoning]
+    DU -.->|checked against| V1[In vitro, in vivo, 5M patient trajectories]
+    TR -.->|checked against| V2[Blinded expert assessment, real-world outcomes]
+</div>
+
+<h4>TxAgent: tools over parameters</h4>
+<p>TxAgent's design choice is the load-bearing idea of the whole talk: answer quality comes from retrieving and composing curated tools and knowledge at the moment of reasoning, not from cramming every fact into the model's weights ahead of time. The agent runs multi-step reasoning over a toolbox of 211 expert-curated tools, collectively called ToolUniverse, covering every FDA-approved drug since 1939 and clinical data sources including OpenFDA, Open Targets, and the Human Phenotype Ontology. A component called ToolRAG selects the right subset of tools for each reasoning step, so the agent is not searching all 211 tools blindly on every hop, it retrieves the relevant ones first, then reasons.</p>
+
+<div class="mermaid">
+flowchart LR
+    Q[Treatment question] --> TRag[ToolRAG: select relevant tools]
+    TRag --> U[ToolUniverse: 211 curated tools]
+    U --> MS[Multi-step reasoning]
+    MS --> A[Grounded, tool-composed answer]
+</div>
+
+<p>The published accuracy figure for this system is 92.1 percent on open-ended drug reasoning tasks, evaluated across five purpose-built benchmarks, DrugPC, BrandPC, GenericPC, TreatmentPC, and DescriptionPC, spanning 3,168 drug-reasoning tasks and 456 personalized treatment scenarios. On those benchmarks it outperformed both a leading proprietary general-purpose language model and a large open-weight reasoning model, which is a meaningfully broader and more rigorous evaluation than the keynote's own description of "blinded expert assessment in rare diseases" suggests on its own, the blinded expert review is a separate, additional check layered on top of the benchmark numbers, not a replacement for them. One naming note from the verification pass: the term ToolRAG is confirmed throughout the project's code repository and related materials, but does not appear word for word inside the fetched arXiv abstract text itself, so treat the term as accurate to the broader project rather than a phrase lifted directly from the paper's abstract.</p>
+
+<h4>Scientific environments and the discovery loop</h4>
+<p>Zitnik names the unifying layer underneath all three capabilities scientific environments: infrastructure that connects language models to what she calls an open universe of scientific tools, rather than a fixed, hand-picked set built for one narrow task. The evaluation philosophy that goes with it is a discovery loop, where an AI prediction is paired with an actual experiment or a real-world outcome, and the loop only counts as evidence when that pairing closes, not when the prediction is generated.</p>
+
+<div class="mermaid">
+flowchart TD
+    P[AI-generated prediction] --> E[Paired experiment or real-world check]
+    E -->|confirms| K[Added to verified knowledge]
+    E -->|refutes| R[Prediction discarded, loop informs next hypothesis]
+    K --> P
+    R --> P
+</div>
+
+<h3>What this means for you</h3>
+<p>This talk is closer to a blueprint for agentic search v4 than any other single talk at the conference, and it validates the core architectural bet you are already making rather than introducing a new one.</p>
+<p>Tools over parameters is the retrieval-augmented generation thesis, confirmed in exactly the domain v4 serves, at production scale, with a published accuracy number to point to. TxAgent's 92.1 percent on 3,168 drug-reasoning tasks is evidence that an agent grounded in curated, retrievable tools and current knowledge sources beats an agent trying to answer from parameters alone, even against strong general-purpose models. That is the argument for keeping v4's design centered on retrieval and tool composition rather than drifting toward "just fine-tune a bigger model and hope it knows enough."</p>
+<p>ToolRAG is a specific, reusable pattern for a problem v4 will hit directly: when the tool or source library grows past a handful of options, you cannot let the agent search all of them on every query. Retrieve the relevant subset first, then reason over that subset. This is the same shape as the BioNeMo workshop's per-step model selection and Chorus's oracle-wrapping from Chapter 1, three independent talks converging on the same answer to the same problem.</p>
+<p>Grounding in verifiable, named sources, OpenFDA, Open Targets, the Human Phenotype Ontology, is TxAgent's actual hallucination defense, and it is the same mechanism your nws-production-standards cite-or-refuse gate already requires: every claim ties to a specific retrieved source, or the system declines to answer. The discovery loop is the sharpest version of the eval-harness idea across the whole conference: a prediction only counts once it is checked against an experiment or a real outcome, not once it is generated fluently. If v4 ever needs a north-star evaluation philosophy beyond a static benchmark, this is it, judge outputs by whether they hold up when checked, not by how confident they sound.</p>
+<p>The multimodal relational foundation model layer underneath disease understanding is the knowledge-graph half of your own stack, made concrete: a graph tying together genes, proteins, cells, and patients surfaces mechanisms that no single flat data source would reveal on its own, which is the argument for keeping a real graph structure in v4 rather than flattening everything into one text index. And the closing note on openness, an Open AI Scientists Initiative and open-sourced tooling, lines up directly with building v4 as your own open-source project rather than a closed, borrowed capability, which is the same choice your career strategy memory already names as owned capital over borrowed capital.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Foundations of human-AI co-science</td><td>Thursday 16:40-17:40</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- CHAPTER 5 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-5" data-chapter="5">
+<div class="part-heading">Part 2: Knowledge graphs as infrastructure</div>
+<span class="chapter-number">Chapter 5</span>
+<h2>Ontologies and schemas as the shared vocabulary</h2>
+
+<h3>What is an ontology?</h3>
+<p>An ontology is an agreed vocabulary of concepts and the relationships between them, written down so both people and machines use it the same way. "T cell" means the same specific thing whether a curator in one lab or an algorithm in a data pipeline uses it, because the term traces back to one shared definition with one stable identifier.</p>
+<p>A schema is the structural cousin of an ontology. Where an ontology defines what a concept means, a schema defines how concepts get stored: which fields a node has, which relationship types are allowed, how confidence and source get recorded. A knowledge graph needs both. The ontology supplies the words. The schema supplies the grammar.</p>
+<p>Four ISMB 2026 talks cover different layers of this shared-vocabulary problem: keeping a vocabulary current as biology changes (the Cell Ontology), designing a schema so graphs can talk to each other (the Cell Knowledge Network), governing hundreds of vocabularies so they do not drift apart (the OBO Foundry), and defending why any of this curated infrastructure still matters when a language model can already produce plausible-sounding answers on its own (the Martone keynote).</p>
+
+<h3>Why does it exist?</h3>
+<p>Without a shared vocabulary, every project reinvents its own labels, and no two knowledge graphs can merge without a translation project first. The Cell Knowledge Network talk states the failure mode directly: if your node for "T cell" uses a different identifier than mine, the graphs cannot merge, no matter how good either graph is on its own (Session: "Developing a semantically interoperable knowledge graph schema to support single cell transcriptomics," Matthew Diller, Lincoln West).</p>
+<p>Biology also keeps changing the vocabulary it needs. Cells have two competing definitions. The classical one names a cell by function, shape, location, and lineage, the kind of description a pathologist would give. The modern one names a cell by its transcriptomic profile, the set of genes it switches on, measured one cell at a time by newer atlas technologies. Connecting the two by hand does not scale to how fast atlases are growing (Session: "Bridging classical and transcriptomic cell types at scale: agentic AI workflows for the Cell Ontology," David Osumi-Sutherland, Lincoln West).</p>
+<p>And a deeper question sits underneath both of those: in a world where a language model already seems to "know" that a CA1 pyramidal cell is a kind of hippocampal neuron without consulting any ontology, is curated vocabulary still worth the cost of maintaining it? That question is the spine of the Martone keynote, and it reappears as the closing argument of this whole part of the book.</p>
+
+<h3>How does it work?</h3>
+
+<h4>Keeping a vocabulary current: agentic workflows for the Cell Ontology</h4>
+<p>The Cell Ontology talk describes two workflows that use AI to keep pace with atlas growth while keeping a human in the approval loop.</p>
+<p>The first is a community workflow. A plain request on GitHub, "add this cell type," turns into a validated draft ontology term. The system checks each asserted fact against the cited literature and links the new term to atlas data before a human approves it.</p>
+<p>The second, Evidencell, is a deep-search agent built specifically for atlas annotation. It combines three inputs: literature mining, atlas metadata, and bioinformatic analysis. It outputs a structured hypothesis mapping a transcriptomic cluster (a group of cells that behave alike in the data) to a classical cell type. Every mapping carries typed evidence rather than a single citation blob: literature excerpts with citations, marker gene overlaps, spatial expression, and electrophysiology or morphology data, each tagged with what kind of evidence it is.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Literature mining] --> D[Evidencell hypothesis]
+    B[Atlas metadata] --> D
+    C[Bioinformatic analysis] --> D
+    D --> E[Typed evidence bundle]
+    E --> F[Anti-hallucination check]
+    F --> G[Human review gate]
+    G --> H[Cell Ontology term]
+</div>
+
+<p>The paper trail behind this talk, Osumi-Sutherland's "The Cell Ontology in the age of single-cell omics" (Scientific Data, 2026), confirms editors already use LLMs to draft cell type definitions with literature references for expert validation, and confirms exploration of an agentic literature-extraction tool called Aurelian. It does not surface a standalone "Evidencell" system anywhere in the public literature, so that specific piece of the talk remains a claim from the room rather than a documented one.</p>
+
+<h4>Designing a schema so graphs can merge: the Cell Knowledge Network</h4>
+<p>The Cell Knowledge Network (CKN) is an NLM knowledge graph that ties single-cell experiment data to biological knowledge, and its schema is built from the start to interoperate with other graphs rather than stand alone.</p>
+<p>Two design choices do the work. First, node and edge types are normalized to terms from biomedical ontologies, chiefly the Cell Ontology, the same vocabulary CELLxGENE and HuBMAP already use. Second, nodes, edges, and triple assertions (a triple is a subject-predicate-object statement, such as "T cell expresses CD3") are mapped to the Biolink Model, an upper-level data model designed so different biomedical graphs share the same categories and predicates.</p>
+<p>On top of that shared structure, CKN adds edge properties for trustworthiness: a confidence measure and the source of each assertion, stored directly on the edge rather than in a separate table. Provenance travels with the fact, not beside it.</p>
+<p>No dedicated paper for CKN's schema was found. The closest public record is a KG-Hub registry entry describing CKN as built from "validated computational analysis pipelines and natural language processing of scientific literature." The schema itself is public on GitHub at NIH-NLM/cell-kn-schema.</p>
+
+<h4>Governing hundreds of vocabularies without central control</h4>
+<p>The OBO Foundry is the community that coordinates interoperable open ontologies for the life sciences, and its 2026 status talk frames the challenge as no longer "how do we build ontologies" but "how do we keep hundreds of them from drifting apart."</p>
+<p>The Foundry runs on shared principles and governance, not central control. Its technical backbone is three things: persistent URLs (stable web addresses that never break), shared repository structures, and lightweight web infrastructure. Two tools do the heavy lifting: ROBOT and the Ontology Development Kit automate release workflows, quality checks, and mapping between ontologies. The core stance is to treat ontology building as an engineering discipline: versioning, automated checks, continuous integration, the same rigor a software team applies to a codebase.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Shared principles] --> B[Persistent URLs]
+    A --> C[Common repo structure]
+    B --> D[ROBOT + ODK tooling]
+    C --> D
+    D --> E[Automated release checks]
+    E --> F[Ontologies stay interoperable]
+</div>
+
+<p>The most recent public status paper found dates to 2021, not a 2026 update, but it confirms the mechanics: a volunteer operations committee, a public compliance dashboard scoring ontologies against 13 checkable principles, four principles at 100 percent compliance across 175 active ontologies, and "textual definitions" as the weakest at roughly 11 percent compliance. Publishing that dashboard drove voluntary improvement, evidence that a visible quality metric changes curator behavior even without an enforcement mechanism behind it. The community is now starting to fold AI-assisted approaches into curation and development, the same direction the Cell Ontology talk demonstrates concretely.</p>
+
+<h4>Why the vocabulary survives contact with language models</h4>
+<p>The Martone keynote makes the argument that ties the other three talks together: ontologies and large language models are partners, not rivals, and the value of an ontology is shifting rather than disappearing.</p>
+<p>Her case rests on one distinction. A language model's "knowledge" drifts with training data and phrasing. It cannot guarantee the same answer twice, and it cannot guarantee the answer is grounded in anything checkable. A human-curated ontology is a stable anchor in a knowledge landscape that keeps shifting underneath it: a fixed, agreed reference point a probabilistic model cannot promise on its own. She uses a sociology-of-science lens, looking at when a field actually reaches consensus on a concept, to decide when something has earned stable representation, which matters in a field like neuroscience where even brain regions and cell types still lack full consensus.</p>
+<p>The flip side of her argument is that AI is the technology that finally lets the field build comprehensive knowledge artifacts at a scale that was previously impossible, and hand domain experts tools to use them, which is exactly what the Cell Ontology talk demonstrates in practice. So the relationship runs both ways: AI helps build and exploit ontologies, and ontologies keep AI grounded.</p>
+<p>No dedicated 2026 paper exists for this keynote. The closest authored statement of the theme, Larson and Martone's "Ontologies for Neuroscience: What Are They and What Are They Good For?" (Frontiers in Neuroscience, 2009), confirms the underlying claim: an ontology is a formal representation using first-order logic and standardized relationships, not just a controlled vocabulary, useful for annotation, retrieval, and cross-scale reasoning. The 2026 keynote extends a seventeen-year-old argument rather than inventing a new one.</p>
+
+<h3>What this means for you</h3>
+<p>Agentic search v4 will eventually need to normalize entities, whether genes, diseases, or cell types, to something more stable than raw text strings. These four talks give you a working design, not just a philosophy.</p>
+<p>Steal the typed-evidence pattern from Evidencell: instead of attaching one citation to a claim, attach evidence with a kind (literature excerpt, marker overlap, spatial data) so downstream reasoning can weigh sources by type, not just count them. Normalize to shared ontologies and the Biolink Model at ingest time, the way CKN does, not after the fact. Merging an external graph later becomes a package install rather than a research project if your schema already speaks the same vocabulary. And when someone asks why you are building on curated ontologies instead of just trusting an LLM's internal knowledge, the Martone argument is your answer: the ontology is the stable anchor that keeps model output grounded and consistent over time, and the LLM is what lets you build and query that anchor at a scale that used to be impossible.</p>
+<p>The OBO Foundry's dashboard lesson generalizes past ontologies. A public, automated compliance score changed curator behavior even without an enforcement mechanism. If v4 accumulates its own graph or terminology over time, publishing a similar quality dashboard against a fixed checklist may do more for data quality than any manual review policy.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Bridging classical and transcriptomic cell types at scale: agentic AI workflows for the Cell Ontology</td><td>Monday 14:20-14:40</td><td>Paper verified</td></tr>
+    <tr><td>Developing a semantically interoperable knowledge graph schema to support single cell transcriptomics</td><td>Monday 14:40-15:00</td><td>No public paper found (verified)</td></tr>
+    <tr><td>Keynote: AI and ontologies, the beginning of a beautiful friendship</td><td>Monday 16:40-17:40</td><td>Paper verified</td></tr>
+    <tr><td>The OBO Foundry in 2026</td><td>Tuesday 12:40-13:00</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 6 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-6" data-chapter="6">
+<div class="part-heading">Part 2: Knowledge graphs as infrastructure</div>
+<span class="chapter-number">Chapter 6</span>
+<h2>Registries, provenance, and quality control</h2>
+
+<h3>What is this layer?</h3>
+<p>Chapter 5 covered the vocabulary a knowledge graph speaks. This chapter covers the plumbing that turns raw, messy sources into a graph you can trust, and then keeps other people from having to rebuild it from scratch.</p>
+<p>Six ISMB 2026 talks together sketch the full lifecycle: building a graph automatically from repositories (ORION and DGLink), resolving ambiguous entity names before they corrupt it (Gene Harmony), validating its structure before anyone builds on it (KGXVal), packaging the story of how it was made (FAIRSCAPE), and cataloging it so the next person can find it instead of starting over (KG-Registry). None of these tools predict anything. They are infrastructure: the unglamorous work that decides whether a graph is trustworthy enough for someone else to build on.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Raw data repositories] --> B[Automated construction]
+    B --> C[Entity resolution]
+    C --> D[Structural validation]
+    D --> E[Provenance packaging]
+    E --> F[Registry and discovery]
+    F --> G[Agentic search consumers]
+</div>
+
+<h3>Why does it exist?</h3>
+<p>Biomedical data is FAIR in principle (Findable, Accessible, Interoperable, Reusable) but rarely FAIR in practice. The FAIR knowledge graphs talk names the gap directly: different identifier systems, different semantic models, and different provenance conventions mean that stitching together the exact graph a research question needs is a slog, so most teams either use one giant one-size-fits-all graph or rebuild integration themselves (Session: "FAIR knowledge graphs on-demand," Chris Bizon, Cabinet).</p>
+<p>Even when a graph gets built, nobody automatically knows it is correct. Sources carry wrong annotations, identifier normalization introduces its own mapping errors, and the exchange standard itself cannot always represent every case cleanly (Session: "KGXVal: quality control for biomedical knowledge graph harmonization," Daniel Korn, Lincoln West). And even when a graph is correct, nobody can find it. Even expert investigators struggle to know which graphs exist, how they were built, how to access them, and how they relate to each other, because no shared registry answered those questions before now (Session: "KG-Registry: the open registry of knowledge graphs and their provenance," J. Harry Caufield, Lincoln West).</p>
+<p>Underneath all of it sits a quieter failure mode: silent misidentification. A single gene symbol can point to two different genes, an alias collision that breaks any tool aggregating or linking data by symbol without anyone noticing (Session: "Curating gene symbol relationships to resolve gene symbol ambiguity," Anastasia Bratulin, Lincoln West).</p>
+
+<h3>How does it work?</h3>
+
+<h4>Building graphs from raw sources: ORION and DGLink</h4>
+<p>ORION is a graph-building framework underneath the ROBOKOP system. It ingests a source, normalizes identifiers (mapping different IDs for the same thing to one), harmonizes semantic types and predicates to the Biolink Model, preserves provenance, and emits a reusable graph module. The published paper confirms ORION's name in full: Operational Routine for the Ingest and Output of Networks. The ROBOKOP Graph Repository is the distribution layer on top: users discover, retrieve, and compose prepared modules with package-manager mechanics, so assembling a custom graph becomes closer to installing packages than running a research project.</p>
+<p>DGLink automates the same idea for a different starting point: entire data portals rather than single sources. It crawls a portal's studies and experimental files and extracts semantic annotations through named entity recognition (finding biomedical entities in text), then normalizes them against seven key ontologies (HGNC, UniProt, ChEBI, MeSH, DOID, HP, EFO) using a grounding tool called Gilda, which maps a mention like "TP53" to its exact ontology identifier. Unlike prior tools that annotate only study-level metadata, DGLink does schema-free ingestion of both tables and modality-specific files such as VCF and DICOM, so it captures the richer content buried inside the actual experimental files, not just the summary description on top.</p>
+<p>To keep automated table annotation from flooding the graph with false positives, DGLink runs three column-selection strategies in sequence.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Candidate table column] --> B{Rule-based filter}
+    B -->|Passes| C[LLM schema matching]
+    B -->|Fails| D[Discarded]
+    C -->|Matches ontology| E[Grounded via Gilda]
+    C -->|No match| D
+    E --> F[Added to knowledge graph]
+</div>
+
+<p>The resulting graph follows the Biolink data model and is queryable three ways: a Neo4j graph database, a semantic-search web interface, and an LLM chat interface exposed through a Model Context Protocol (MCP) server, a standard way to hand tools and data to an AI agent. Across three portals it reported 96 to 100 percent tabular coverage, 0.819 F1 on LLM-based schema matching, and 96 percent grounding accuracy through Gilda. No public paper for DGLink was found, though its authors were confirmed as Woodward Galbraith and Benjamin M. Gyori of the Gyori Lab for Computational Biomedicine.</p>
+
+<h4>Resolving entities before they corrupt the graph: Gene Harmony</h4>
+<p>Gene symbols are used everywhere, but naming guidelines are often ignored in practice, and a single symbol can point to more than one gene. The talk's example: "BCR" is the primary symbol for one gene and also an alias for a second, unrelated gene, one clinically important in cancer fusions and the other uncharacterized. Any tool that links or aggregates data by symbol inherits that ambiguity silently.</p>
+<p>Gene Harmony fixes this by curating explicit relationships between gene symbols and gene concepts, a gene concept being the stable underlying gene, kept separate from the fuzzy text symbol that names it. Curators assign relationship labels, primary, alias, or collision, using a mix of manual, programmatic, and automated methods. Recording which symbol maps to which concept, and how, lets a machine disambiguate a symbol automatically instead of guessing. The resource is meant to feed harmonization workflows in aggregation tools like DGIdb and MetaKB.</p>
+<p>The pre-brief cited a 7.8 percent alias-collision rate in Ensembl. The verified poster gives a different, more precise number from a different scope: 3,940 gene records (2.3 percent) contain aliases that identically match another gene's primary symbol, using KRAS as the worked example instead of BCR. The two figures likely measure different things (a collision rate versus a record-level match rate), so both should be treated as approximate estimates of the same underlying problem rather than the same statistic twice.</p>
+
+<h4>Validating structure before anyone builds on it: KGXVal</h4>
+<p>KGX is a shared exchange standard for biomedical knowledge graphs. Converting many sources into KGX format and normalizing them against shared ontologies is imperfect work, and finding the resulting errors by hand takes specialized tooling and heavy expert time.</p>
+<p>KGXVal is a Python tool that automates the check. It takes KGX-formatted files and produces three outputs. Summary statistics show how often each combination of node and edge type labels appears, so outliers stand out immediately. Stratified samples pull a representative slice of each type-combination so a curator can spot-check without reading everything. A full violation list records every place the file breaks the KGX model, both before and after normalization. All three outputs land in ordinary spreadsheet files, so a curator opens the report in Excel with no extra tooling required.</p>
+<p>The talk reported over 3,100 previously undetected schema errors across 26 harmonized sources. That specific figure could not be independently confirmed. The pre-brief's related-work link turned out to point to a different, broader knowledge graph evaluation paper rather than a KGXVal-specific publication, so the error count should be treated as an unverified claim from the room, not a documented result, pending a dedicated KGXVal paper.</p>
+
+<h4>Packaging the "how was this made" story: FAIRSCAPE</h4>
+<p>Most explainability work looks at the model. FAIRSCAPE looks at everything before the model: the cleaning, segmenting, embedding, and feature-derivation steps that are usually opaque. If you cannot trust how the data was prepared, the argument goes, you cannot trust what the model does with it, especially in sensitive decisions.</p>
+<p>FAIRSCAPE scores 28 AI-readiness criteria across seven categories: FAIRness, provenance, characterization, pre-model explainability, ethics, sustainability, and computability. It packages data and metadata as RO-Crates (Research Object Crates, a standard way to bundle data with machine-readable metadata) using schema.org and PROV vocabularies, PROV being a standard for recording the who-what-when of how an artifact was produced. It builds component-resolvable provenance graphs, meaning any single piece of output can be traced back through its exact production steps, alongside a human-readable datasheet a non-specialist can read directly.</p>
+<p>Newer work layers graph-RAG (retrieval-augmented generation run over the provenance graph itself, not the content) on top, producing audience-targeted interpretations and flagging issues like data leakage as severity-coded annotations stored back into the same graph. That is provenance treated as a queryable knowledge source in its own right, not a static log file nobody reads.</p>
+
+<h4>Finding the graph that already exists: KG-Registry</h4>
+<p>KG-Registry is an open catalog holding metadata for more than 760 data sources, including 135 knowledge graphs and over 4,800 derived products. Each entry is plain Markdown with a YAML front matter header (structured key-value fields at the top of a text file), a format both people and agentic AI tools can read and curate without special tooling.</p>
+<p>Each entry records how a source is distributed, transformed, accessed, and related to others, plus product-level provenance, meaning the origin and processing history of each derived artifact, not just the parent graph. License, repository, activity status, domain, and standards compatibility are all captured. The schema itself is written in LinkML, a modeling language, so registry entries plug directly into LinkML's validation tooling.</p>
+<p>The predecessor system, KG-Hub, confirms the technical ancestry: a standardized ETL pipeline using the KGX and Koza tools, Biolink Model compliance, automated versioned builds with permanent URLs, OBO Foundry ontology integration, and storage on AWS S3. At the time of that earlier paper it hosted seven biomedical KG projects, from COVID-19 research to microbial phenotypes, ranging from hundreds of thousands to millions of nodes and edges. KG-Registry is that same discipline applied to cataloging graphs across the whole field, not just the ones one team builds.</p>
+
+<h3>What this means for you</h3>
+<p>If agentic search v4 ever builds or ingests a knowledge graph, this chapter is close to a reference architecture for the pipeline around it, not just an inspiration.</p>
+<p>Construction: DGLink's pattern, named entity recognition plus ontology grounding through Gilda, feeding a Biolink-conformant graph exposed over an MCP server, is close to a working blueprint for v4's own ingest half. Entity resolution: Gene Harmony's symbol-versus-concept separation is exactly the discipline your grounding step needs to avoid silently linking a fact to the wrong gene, a failure mode that produces confidently wrong answers with no visible error. Validation: a KGXVal-style gate, deterministic schema checks producing a human-reviewable spreadsheet, belongs in your pipeline before any graph reaches downstream reasoning, the same lesson your own linkml-reference-validator work already teaches. Provenance: FAIRSCAPE's RO-Crate-plus-PROV packaging, and especially its graph-RAG-over-provenance idea, is worth stealing outright. Running retrieval over the provenance graph itself, not just the content, lets an answer explain how its evidence was produced, not only what the evidence says. Discovery: a KG-Registry-style catalog, plain Markdown plus YAML so both a person and an agent can maintain it, is the natural index for v4 to consult before deciding which knowledge graph to query for a given question, rather than hardcoding one graph as the only source.</p>
+<p>The throughline across all six talks: none of them treat "we built a graph" as the finish line. Construction, resolution, validation, provenance, and discovery are five separate, necessary steps, and skipping any one of them is where trust quietly leaks out of a knowledge graph before an agent ever queries it.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>FAIR knowledge graphs on-demand</td><td>Monday 12:30-12:50</td><td>Paper verified</td></tr>
+    <tr><td>KGXVal: quality control for biomedical knowledge graph harmonization</td><td>Tuesday 11:20-11:40</td><td>No public paper found (verified)</td></tr>
+    <tr><td>KG-Registry: the open registry of knowledge graphs and their provenance</td><td>Tuesday 11:40-12:00</td><td>Paper verified</td></tr>
+    <tr><td>Curating gene symbol relationships to resolve gene symbol ambiguity</td><td>Tuesday 12:20-12:40</td><td>Paper verified</td></tr>
+    <tr><td>FAIRSCAPE: pre-model AI-readiness and interpretability for biomedical data</td><td>Tuesday 12:20-12:40</td><td>Paper verified</td></tr>
+    <tr><td>DGLink: automated knowledge graph construction from data repositories</td><td>Tuesday 16:40-17:00</td><td>No public paper found (verified)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 7 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-7" data-chapter="7">
+<div class="part-heading">Part 2: Knowledge graphs as infrastructure</div>
+<span class="chapter-number">Chapter 7</span>
+<h2>Structured knowledge in a genAI world</h2>
+
+<h3>What is this debate?</h3>
+<p>Every talk in the previous two chapters assumed curated, structured knowledge is worth building: ontologies worth maintaining, schemas worth designing, graphs worth validating and cataloging. This closing chapter covers the one talk that puts that assumption on trial directly.</p>
+<p>"In a genAI world, does structured knowledge still have a role in science?" is a perspective talk contrasting two ways of holding scientific knowledge. Implicit knowledge is what a language model encodes inside billions of numeric weights and expresses fluently as text, with no explicit, inspectable structure behind it. Explicit knowledge is what an ontology, a knowledge graph, or a relational database captures: relationships in a formal structure with defined semantics, something you can query and verify (Session: "In a genAI world, does structured knowledge still have a role in science?" Karin Verspoor, Lincoln East).</p>
+
+<h3>Why does it exist?</h3>
+<p>Foundation models have absorbed vast amounts of scientific knowledge and can reproduce it fluently through plain language. That is genuinely useful, and it is also a direct threat to any field, like bioinformatics, that has spent decades building its value on painstakingly curated, structured knowledge. The open question is uncomfortable and simple: if a model already seems to "know" the relationships, do we still need the ontologies and databases that took years to build?</p>
+<p>The live notes from the room sharpen why this question has teeth rather than staying abstract. Searching for a relevant paper feels like missing 99 percent of what is actually out there. Part of the friction is the nomenclature itself: searching PubMed by disease and protein name is frustrating precisely because free text does not resolve synonyms or ambiguity the way a controlled vocabulary over concepts and relations would. That frustration is a lived argument for structure, from inside the search experience that structure is supposed to fix.</p>
+
+<h3>How does it work?</h3>
+<p>Verspoor does not declare a winner. The talk explores the tensions and the connections between implicit and explicit knowledge rather than dismissing either side, deliberately raising hard questions about where each paradigm can actually be trusted.</p>
+<p>The closest related published work found, on "Rosetta Statements," proposes a specific bridge between the two paradigms rather than picking one. Instead of requiring every contributor to have upfront ontology expertise, it models knowledge as English natural-language statements, using Wikidata as the substrate, so domain experts can contribute without semantic training. In that framing, LLMs get a defined, bounded role: an accessibility layer for data entry and display, not a replacement for the underlying structured, machine-actionable graph. The model helps people talk to the structure. It does not become the structure.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[LLM implicit knowledge] --> C[Grounded answer]
+    B[Explicit structured knowledge] --> C
+    C --> D[Verifiable by a human]
+</div>
+
+<p>That bridge is a useful frame for reading back across this entire part of the book. Chapter 5's ontologies are explicit knowledge that stays stable while a model's weights drift with each retraining. Chapter 6's registries, validators, and provenance tools exist because explicit knowledge only earns trust when its construction and quality are checkable, something a model's fluent output cannot offer on its own. Nothing in either chapter argues against using language models. The Cell Ontology's agentic workflows and DGLink's LLM-based schema matching both use language models directly, inside a structure that keeps their output checkable. The pattern across ten talks is not "structure instead of genAI." It is "genAI to build and query structure, structure to keep genAI honest."</p>
+
+<h3>What this means for you</h3>
+<p>This talk names the exact bet agentic search v4 is making, and the rest of this part of the book is the evidence for one side of it. Your architecture already answers Verspoor's question in practice: use the LLM for language and reasoning, but anchor every claim to explicit, verifiable structure through retrieval-augmented generation, knowledge graphs, and provenance. The talk is worth reading directly as ammunition for that choice, especially the trust argument: implicit knowledge cannot be audited after the fact, and an unauditable answer is not a safe foundation for a biomedical search system.</p>
+<p>The live-notes detail about PubMed search frustration is a small but concrete design signal. If a domain expert in the room finds keyword search over disease and protein names frustrating because it does not resolve synonyms, that is a direct argument for the entity resolution and ontology-normalization work in chapters 5 and 6, not an abstract one. It is the same problem Gene Harmony solves for gene symbols, generalized to disease and protein search. When you scope v4's retrieval layer, treat "does this query resolve synonyms through a controlled vocabulary" as a concrete, testable requirement, not a nice-to-have.</p>
+<p>The honest caveat: this is a perspective talk with no dedicated paper, built to provoke discussion rather than report a result. Treat its framing as a well-posed question worth carrying into your own design reviews, not as a settled finding you can cite as proof either way.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>In a genAI world, does structured knowledge still have a role in science?</td><td>Tuesday 14:20-15:00</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- CHAPTER 8 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-8" data-chapter="8">
+<div class="part-heading">Part 3: Graphs as prediction engines</div>
+<span class="chapter-number">Chapter 8</span>
+<h2>Embeddings that encode biological context</h2>
+
+<h3>What is a context-aware embedding?</h3>
+<p>An embedding is a list of numbers that stands in for something complicated, a protein, a drug, a disease, so a computer can measure how similar two things are by comparing their number lists instead of their raw structure. A context-aware embedding is the same idea with one addition: the numbers are shaped by the specific biological relationships around the thing, not just its own properties in isolation.</p>
+<p>Think of it like describing a person. "Alex is 5 foot 10" is a plain fact, useful on its own. "Alex is the goalkeeper on a team that just won the league" is context. The second description tells you what Alex does inside a network of relationships. A context-aware embedding tries to bake that second kind of description into a vector of numbers.</p>
+
+<h3>Why does it exist?</h3>
+<p>Two of the three talks in this chapter (Session: "GATSBI: context-aware protein embeddings", Gowri Nayar, NetBio; Session: "From general-purpose to disease-specific features: aligning LLM embeddings on a biomedical KG", Suman Pandey, NetBio) exist to fix the same gap from two different directions.</p>
+<p>Plain embeddings, whether built from a protein's amino acid sequence or from a large language model's general training, carry broad, generic meaning. They do not know that a specific drug sits three hops from a specific disease inside a specific knowledge graph. For a narrow scientific question, drug repurposing for one disease, or annotating a protein nobody has studied, that missing context is exactly the information you need.</p>
+<p>The third talk (Session: "The NIH Common Fund Data Ecosystem Data Distillery Knowledge Graph (UBKG)", Deanne M. Taylor, NetBio) supplies the substrate the other two lean on: a large, ontology-aligned graph that already has the relationships worth encoding.</p>
+<p>There is also an honesty problem underneath all of this. Most protein embedding methods are graded on well-studied proteins with easy test splits. That overstates how well they will do on the proteins researchers actually need help with, the understudied ones. GATSBI's real contribution is exposing this gap, not just building a better embedding.</p>
+
+<h3>How does it work?</h3>
+
+<h4>GATSBI: honest evaluation exposes real gains for understudied proteins</h4>
+<p>GATSBI builds a heterogeneous network, a graph with several different kinds of edges layered on top of the same proteins: physical protein-protein interactions, co-expression (genes that turn on and off together), sequence-derived representations, and tissue-specific associations. It then learns embeddings using graph attention, a mechanism where each node decides how much weight to give each neighbor when gathering information, rather than treating every neighbor equally.</p>
+<p>The paper backs this with real scale: ESM-2 sequence embeddings for 20,074 human proteins, STRING physical interactions (16,462 nodes, 217,092 edges), STRING co-expression (11,205 proteins, 151,067 edges), and HumanBase tissue-specific networks (17,617 proteins, over 1.2 million edges), fused into one graph of 18,049 nodes and 1,575,310 edges.</p>
+<p>The real contribution is the evaluation discipline. Different biological questions need different kinds of test splits:</p>
+<ul>
+<li>Predicting a missing interaction between two known proteins needs an edge-masked split: hide some edges, see if the model recovers them.</li>
+<li>Annotating a brand-new protein needs a node-held-out split: hold out entire proteins the model never saw, called inductive evaluation, because a real new protein was never in the training graph at all.</li>
+</ul>
+<p>Against the Pinnacle baseline, GATSBI wins clearly on edge-masked interaction prediction (AUROC 0.878 versus 0.800) and functional set prediction (AUROC 0.804 versus 0.554), and is comparable on the harder node-held-out task. The gap is widest exactly where it matters most: for understudied proteins, GATSBI beats Pinnacle by 0.259 AUROC and 0.290 AUPRC under the edge-split evaluation, and still wins under the harder inductive split (AUROC 0.632 versus 0.522).</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Protein-protein interactions] --> E[Heterogeneous graph]
+    B[Co-expression edges] --> E
+    C[Sequence embeddings] --> E
+    D[Tissue associations] --> E
+    E --> F[Graph attention]
+    F --> G[Context-aware embedding]
+    G --> H{Which test split?}
+    H -->|Edge-masked| I[Missing interaction]
+    H -->|Node-held-out| J[New protein function]
+</div>
+
+<h4>CLEAR: bending general embeddings toward a disease-specific graph</h4>
+<p>CLEAR, short for Contextualizing LLM Embeddings via Attention-based gRaph learning, starts from the opposite direction. Instead of building a graph-native embedding from scratch, it takes a general-purpose large language model embedding, one that already carries broad textual meaning, and reshapes it using the connection structure (the topology) of a disease-specific knowledge graph. A drug's embedding gets pulled toward its actual neighbors in the disease graph, so the vector ends up carrying both general semantics and domain-specific structure.</p>
+<p>This matters most when data is sparse, which is exactly when a confident but ungrounded language model is most likely to produce a plausible-sounding wrong answer. Tested on five benchmarks, CLEAR improved F1 score by up to 30 percent over prior methods: Cdataset (+26 percent), Fdataset (+8 percent), Ydataset (+23 percent), LAGCN (+2 percent), and LRSSL (+30 percent).</p>
+<p>Applied to Alzheimer disease and related dementias, using a knowledge graph covering 2,285 FDA-approved drugs, 912 neurodegenerative diseases, and 4,042 therapeutic proteins, CLEAR reached F1 0.989 against a baseline of 0.815, and correctly recovered known therapeutic relationships. It also surfaced a specific new candidate: dextromethorphan, flagged for Alzheimer disease with supporting Gene Ontology enrichment.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[General LLM embedding] --> C[Attention-based alignment]
+    B[Disease-specific graph topology] --> C
+    C --> D[Fused embedding]
+    D --> E[Drug repurposing ranking]
+</div>
+
+<h4>UBKG: the shared graph substrate these embeddings can align to</h4>
+<p>The Data Distillery Knowledge Graph is what CLEAR's method needs to exist somewhere real: a large graph with actual, ontology-grounded structure to align an embedding against. Built on the Unified Biomedical Knowledge Graph (UBKG) framework and the Petagraph schema, it harmonizes over 180 ontologies and data sources into a UMLS-like concept-code-term schema, a shared backbone of concepts, the codes that name them, and the terms people use for them. It integrates GTEx, HuBMAP, Kids First, LINCS, Metabolomics Workbench, ClinVar, STRING, and MSigDB, and supports multi-hop queries, following a chain of relationships across data types in one traversal, most completing in seconds.</p>
+<p>One of its eight documented use cases: a congenital heart defect analysis that identified 27 genes, including established cardiac regulators GATA4, GATA5, NKX2-5, and TBX20, independently validated by STRING enrichment analysis (FDR below 1e-5).</p>
+
+<div class="mermaid">
+flowchart TD
+    A[GTEx] --> F[UBKG schema]
+    B[HuBMAP] --> F
+    C[Kids First] --> F
+    D[ClinVar, STRING, MSigDB] --> F
+    F --> G[Concept-code-term backbone]
+    G --> H[Multi-hop query]
+</div>
+
+<h3>What this means for you</h3>
+<p>Graph-native prediction and plain retrieval are different tools for different jobs, and this chapter is where the boundary is clearest. A general embedding, the kind a retrieval system already uses to find relevant text, is the right tool when the question is broad and the evidence is abundant. It gets worse, not better, when the question is narrow, the data is sparse, and the correct answer depends on a specific web of relationships a text corpus does not spell out in one place. That is exactly when a graph-aligned embedding like CLEAR, or a graph-native one like GATSBI, earns its cost.</p>
+<p>The evaluation discipline in GATSBI is the sharpest lesson to steal directly. If agentic search v4 is only tested on popular, well-covered topics, the reported performance overstates how the system will do on the long tail, the queries where users actually need the most help. Build held-out, inductive test sets on purpose: hide whole documents or entities the system never saw, not just individual facts, the same way GATSBI holds out whole proteins rather than just individual edges.</p>
+<p>UBKG is the most directly usable artifact in this chapter. It is a working, NIH-scale, ontology-harmonized knowledge graph you could realistically query and cite against today, not a research prototype. If agentic search v4 needs a substrate to ground biomedical claims in structure rather than free text, this is a concrete candidate to evaluate, and its concept-code-term schema is the same backbone that already connects to NLM's UMLS work.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>GATSBI: context-aware protein embeddings</td><td>14:20-14:40</td><td>Paper verified</td></tr>
+    <tr><td>The NIH Common Fund Data Ecosystem Data Distillery Knowledge Graph (UBKG)</td><td>14:40-15:00</td><td>Paper verified</td></tr>
+    <tr><td>From general-purpose to disease-specific features: aligning LLM embeddings on a biomedical KG</td><td>15:20-15:40</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 9 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-9" data-chapter="9">
+<div class="part-heading">Part 3: Graphs as prediction engines</div>
+<span class="chapter-number">Chapter 9</span>
+<h2>Graphs that predict function and interaction</h2>
+
+<h3>What is graph-based function and interaction prediction?</h3>
+<p>Most of biology is relational. What a protein does depends on what it touches: other proteins, pathways, drugs, diseases. A graph-based prediction system stores those relationships as a network, nodes for the biological entities and edges for how they connect, and then uses the shape of that network to predict a relationship nobody has measured yet. Instead of asking "what does this protein look like," it asks "who does this protein sit next to, and what does that tell me."</p>
+
+<h3>Why does it exist?</h3>
+<p>Experimental measurement cannot keep pace with the entities that need annotating. New protein sequences accumulate far faster than labs can test what each one does. Kinase-substrate biology (which enzyme adds a phosphate to which protein) is well mapped, but the mirror process, phosphatases removing that phosphate, is not, because phosphatases got far less experimental attention. Predicting which drug will work on a given cell line, and being able to say why, still has no experimental shortcut. Comparing every protein in a microbial proteome against every other protein by brute force is mathematically expensive: with n proteins, that is roughly n-squared comparisons, which turns into days of compute.</p>
+<p>The five talks in this chapter all attack a version of the same gap, missing experimental coverage, using graph structure to fill it faster and cheaper than a wet lab could.</p>
+
+<h3>How does it work?</h3>
+
+<h4>STAR-GO: fusing text and graph structure for zero-shot function prediction</h4>
+<p>STAR-GO (Session: "STAR-GO: hierarchical ontology-informed protein function prediction", Gökçe Uludoğan, BOKR) predicts what a protein does by tagging it with Gene Ontology (GO) terms, the controlled vocabulary of biological functions. Most prior models lean on either the plain text definition of a GO term or its position in the ontology graph, not both. STAR-GO fuses them: it builds one representation per GO term from both its textual definition (semantic content) and its structural position in the ontology (which terms are its parents and children), processed hierarchically so information flows from general terms down to specific ones. Those fused term representations are then aligned with protein sequence embeddings to learn how sequence maps to function.</p>
+<p>Because the model understands a GO term from both its meaning and its graph neighborhood, it can predict terms it never saw during training, called zero-shot prediction. That matters because the Gene Ontology keeps growing, and a model that only memorizes a fixed vocabulary goes stale the moment new terms are added.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[GO term text definition] --> C[Fused term representation]
+    B[GO term graph position] --> C
+    C --> D[Hierarchical processing]
+    D --> E[Aligned with protein sequence]
+    E --> F[Zero-shot function prediction]
+</div>
+
+<h4>GO-CAM: curated causal graphs instead of flat annotations</h4>
+<p>A single GO annotation, "gene X has kinase activity," tells you a fact in isolation. It does not tell you what that activity causes next. GO-CAM (Session: "GO-CAM: curated pathways using GO and new tools", Paul Thomas, BOKR) links individual gene activities into causal models: each annotation becomes a node, and the causal influence one activity has on the next becomes a directed edge, building a small mechanistic circuit instead of a list.</p>
+<p>The 2026 update reports the collection has grown nearly five-fold to 1,571 expert-curated pathway models as of July 2025: 907 for human genes (covering 1,606 gene products), plus 275 for mouse, 197 for budding yeast, 81 for fission yeast, and 67 for fruit fly. New tooling, including a Pathway Widget visualization and API access, makes these causal graphs programmatically usable rather than something a curator has to read one paper at a time.</p>
+<p>This is a curated, expert-provenanced graph, not a predicted one, and it belongs in this chapter as the ground truth other methods are ultimately trying to approximate: mechanistic, causal, and traceable to the person who curated it.</p>
+
+<h4>FlashPPI: turning quadratic comparison into linear-time retrieval</h4>
+<p>Predicting protein-protein interactions across a full proteome (the complete set of proteins an organism makes) traditionally means comparing every protein against every other, order n-squared work that takes days. FlashPPI (Session: "Linear-time prediction of proteome-scale microbial protein interactions", Andre Cornman, MLCSB) reframes the whole problem as retrieval instead of comparison. Using contrastive learning, it places each protein in a shared latent space (a coordinate system of numbers) where interacting partners land near each other. Finding partners becomes a nearest-neighbor lookup, order n work, instead of an all-versus-all scan.</p>
+<p>The signal driving this comes from a genomic language model trained on metagenomic sequences, which has learned cross-protein co-evolution, the pattern where two proteins that physically interact tend to accumulate mutations together over evolutionary time. The result is four times better than prior sequence-based methods, matches structure-folding models at a fraction of the compute cost, and cuts proteome-wide screening from days to minutes. It is served live at seqhub.org alongside functional annotation and genomic context.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[All-pairs comparison] -->|order n squared| B[Days of compute]
+    C[Contrastive learning] --> D[Shared latent space]
+    D -->|nearest neighbor| E[Minutes of compute]
+</div>
+
+<h4>PSNet: heterogeneous graphs recover the phosphatase-substrate map kinases already have</h4>
+<p>PSNet (Session: "Predicting phosphatase-substrate association using a heterogeneous knowledge graph", Marzieh Ayati, NetBio) targets a specific coverage gap: kinase-substrate pairs (which enzyme adds a phosphate) are well mapped, phosphatase-substrate pairs (which enzyme removes it) are not. Existing methods either cover only a handful of phosphatases or rely on sequence motifs alone, which cannot reliably tell specific pairs apart.</p>
+<p>The method builds a heterogeneous knowledge graph, one with several node and edge types at once: phosphatases, kinases, substrates, drugs, and diseases, connected by phosphatase-substrate interactions, kinase-substrate associations, protein-protein interactions, pathways, disease annotations, and drug-target links. It learns Node2Vec-style network embeddings for each entity and feeds them into a supervised classifier to predict new associations. The reported result, AUC 0.97 on the Human Dephosphorylation Database, is sourced from the conference abstract and was not independently confirmed against a full published paper. What is confirmed, from a closely related report by the same research group, is the core finding: different edge types each contribute complementary predictive signal, which is the argument for integrating many relationship types rather than relying on one.</p>
+
+<h4>drGT: attention as an explanation, literature as the check</h4>
+<p>drGT (Session: "drGT: attention-guided gene assessment of drug response", Yoshitaka Inoue, NetBio) predicts how a cell line, a lab-grown population of cells, responds to a drug, and it uses attention, a mechanism that learns how much weight each connection deserves, to point at the specific genes that explain the prediction. That combination matters because clinical use needs both an accurate answer and a believable reason for it.</p>
+<p>The model builds a heterogeneous graph over drugs, genes, and cell lines, and is tested on deliberately hard generalization splits: random, unseen-drug, unseen-cell, and zero-shot (both drug and cell line unseen during training). drGT was the only model in the comparison with positive predictive value for unseen drugs, reaching zero-shot AUROC 0.786, the highest of all models compared, alongside random-split AUROC up to 0.945, unseen-cell-line AUROC 0.706, and unseen-drug AUROC 0.844, validated across three datasets (GDSC, NCI60, CTRP).</p>
+<p>The interpretation is checked against independent evidence, not just trusted at face value: 36.9 percent of drGT's predicted drug-gene links matched known interactions, and 63.7 percent were supported by PubMed abstracts or a structure-based model. The attention scores are not just a plausible-looking heatmap, most of them are literature-grounded.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Drug-gene-cell graph] --> B[Attention mechanism]
+    B --> C[Drug response prediction]
+    B --> D[Drug-gene attribution]
+    D --> E{Check against evidence}
+    E -->|Known interaction| F[36.9 percent confirmed]
+    E -->|Literature or structure model| G[63.7 percent supported]
+</div>
+
+<h3>What this means for you</h3>
+<p>These five talks are a single argument told five ways: when a relationship is missing from experimental data but present in the shape of a graph, structure can substitute for measurement, cheaply and at scale. That is the case for graph-based prediction over plain retrieval or reasoning: use it when the target is a specific, structured relationship (does protein A bind protein B, which phosphatase acts on which substrate, how will this cell line respond to this drug) and the signal lives in a network of known relationships rather than in a passage of text somewhere.</p>
+<p>Retrieval and reasoning are the better tool when the question is really about synthesizing or explaining something already written down. Graph prediction is the better tool when the answer has never been written down at all, because nobody has run the experiment, and the honest way to fill that gap is inference from structure, clearly labeled as a prediction rather than a fact.</p>
+<p>Two patterns are worth carrying into agentic search v4 directly. First, drGT's discipline: never let a model's internal attention or reasoning trace stand alone as the explanation. Check it against independent evidence, in drGT's case published literature, before treating the explanation as trustworthy. That is the same posture as a cite-or-refuse standard applied to a model's own reasoning, not just its final answer. Second, FlashPPI's reframe of an expensive all-pairs comparison as a cheap nearest-neighbor retrieval problem is the identical move behind vector search over documents: embed once, retrieve by nearness, avoid the quadratic scan.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>GO-CAM: curated pathways using GO and new tools</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+    <tr><td>STAR-GO: hierarchical ontology-informed protein function prediction</td><td>15:20-15:40</td><td>Paper verified</td></tr>
+    <tr><td>Linear-time prediction of proteome-scale microbial protein interactions</td><td>12:30-12:40</td><td>Paper verified</td></tr>
+    <tr><td>Predicting phosphatase-substrate association using a heterogeneous knowledge graph</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+    <tr><td>drGT: attention-guided gene assessment of drug response</td><td>15:40-15:50</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-10" data-chapter="10">
+<div class="part-heading">Part 3: Graphs as prediction engines</div>
+<span class="chapter-number">Chapter 10</span>
+<h2>The limits of network prediction</h2>
+
+<h3>What is the limit this chapter is about?</h3>
+<p>Every method in the previous two chapters turns network structure into a prediction. This chapter is about where that move gets shaky: when the method's own assumptions quietly decide the answer, when a promising idea has no public paper to check, when a model trained on one dataset collapses on another, and when the right representation for a piece of biology is not a prediction at all but a category. Four talks, four different ways graph-based prediction can mislead you if you take its output at face value.</p>
+
+<h3>Why does it matter?</h3>
+<p>A prediction is only as trustworthy as the assumptions baked into the method that produced it. Those assumptions are usually invisible: buried in a scaling factor, a choice of training data, a choice of test split. If you cannot see the assumption, you cannot judge whether the prediction it produced applies to your situation. That is the through-line connecting a graph-comparison audit, an unpublished tool, a cross-dataset benchmark, and a variant-representation standard: each one is fundamentally about exposing what a method is quietly assuming before you trust its output.</p>
+
+<h3>How does it show up?</h3>
+
+<h4>Single-sample network modeling: the hidden knob behind every method's headline number</h4>
+<p>A biological network built from many pooled samples averages away person-to-person differences. Single-sample network methods fix that by estimating the network for one individual, but each method (SWEET, BONOBO, SSN, LIONESS) was published in its own notation, which made them impossible to compare honestly (Session: "Challenges and opportunities in single-sample network modeling", Kimberly Glass, NetBio).</p>
+<p>Glass re-casts all four methods in one shared mathematical notation and finds the hidden knob directly: SWEET and BONOBO both include a scale factor that pulls each sample's predicted network toward a shared background network. That factor buys high accuracy, because it anchors every prediction near a sensible average, but it costs specificity, meaning the predicted networks end up looking similar across different samples, which defeats the point of single-sample modeling. SSN sits at the opposite extreme: most specific, least accurate. LIONESS lands in between, nearly as accurate as SWEET and BONOBO and nearly as specific as SSN.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[SWEET, BONOBO] -->|scale factor| B[High accuracy, low specificity]
+    C[SSN] --> D[High specificity, low accuracy]
+    E[LIONESS] --> F[Middle ground]
+</div>
+
+<p>No method here is simply "best." Each trades accuracy for specificity through an assumption you would never see by reading the reported score alone. The opportunity Glass names, a common framework that could combine their strengths deliberately, only exists because the comparison exposed the trade-off in the first place.</p>
+
+<h4>GIMME: fusing text and graph structure still needs a paper to exist</h4>
+<p>GIMME (Session: "GIMME: graph inference for microbial metabolism exploration", Winston Anthony, BOKR) is architecturally the most on-target talk in this whole part: it fuses pretrained language representations of free-text experiment metadata with relational message passing over a biological graph, a graph neural network reasoning over a knowledge graph, to predict microbial gene fitness across conditions, with a natural-language query interface for evidence retrieval on top. That is close to the exact stack an agentic biomedical search system would want.</p>
+<p>The limit is blunt: no public paper or preprint was located under this title and these authors, despite a direct search. Adjacent tools exist (IFIM, MetagenomicKG, KG-Microbe), but none of them is GIMME. Until a paper surfaces, every specific claim about GIMME's performance is unverifiable, and the architecture, however promising, should be read as a design pattern to study, not a result to cite.</p>
+
+<h4>Transfer learning for ASD: in-distribution scores lie</h4>
+<p>This talk (Session: "Transfer learning for detecting Autism Spectrum Disorder using AutDB", Ruslan Kurmashev, MLCSB) is a benchmark, not a network-prediction method, but it belongs here because it names the failure mode that undermines every prediction system in this part if you skip it: a model can score high when tested on the same dataset it trained on, then collapse on a different one.</p>
+<p>The team harmonizes two datasets, MMASD and Engagnition, built from body-pose tracking and motion sensors, into one shared metadata table with a common proxy activity label. They compare two simple models (logistic regression and XGBoost) two ways: trained and tested within one dataset, and trained on one dataset but tested on the other, called leave-one-dataset-out. They measure how far apart the two datasets actually are using Wasserstein distance, a mathematical measure of distributional difference, and visualize it with UMAP. Standard domain-adaptation fixes only partly help: basic covariance alignment (CORAL) recovers some cross-dataset performance, while naive importance weighting is unstable.</p>
+<p>No public paper was located for this specific benchmark either. What is confirmed is the design, and the design is the point: an honest evaluation tests on a source the model never trained on, and it reports what the model loses when it moves, rather than only what it achieves at home.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Train on dataset A] --> B{Test where?}
+    B -->|Dataset A| C[High score, misleading]
+    B -->|Dataset B, leave-one-out| D[True generalization score]
+</div>
+
+<h4>Cat-VRS: when the right structure is a category, not a prediction</h4>
+<p>Cat-VRS (Session: "Cat-VRS: scalable representation of categorical genomic variation", Daniel Puthawala, BOKR) is the deliberate outlier in this chapter, and in this whole part. It does not predict anything. It is a representation standard from the Global Alliance for Genomics and Health (GA4GH) for describing categories of genetic variants, such as "activating mutations" or "gene fusions," rather than one exact variant at a time.</p>
+<p>Clinical knowledge constantly refers to a whole class of variants defined by a shared property, but existing standards were built to describe one precise variant well, not a category. Cat-VRS closes that gap with a constraint-based model: instead of enumerating every member of a category, you define it by the properties its members must satisfy, built from modular, composable constraints. New constraint types, Function and Adjacency, extend the model to functional variants, rearrangements, and gene fusions, alongside the existing Defining Allele, Defining Location, Copy Count and Change, and Feature Context constraints. It is implemented in real clinical resources, VICC MetaKB and CIViC, across graph, relational, and flat-file databases, with a v1.0.0 release (June 2025) and 12 registered implementations. The scale of the problem it addresses is concrete: 83 of 236 precision oncology FDA approvals (35.17 percent) referenced broad variant categories, not single exact variants.</p>
+<p>The reason it belongs in a chapter about limits: it is a reminder that not every biological question is a prediction problem. Sometimes the right computational move is not to infer a missing relationship from a graph, it is to build a representation precise enough that matching becomes a lookup instead of a guess. A well-designed category is a form of structure that makes prediction unnecessary for the cases it covers.</p>
+
+<h3>What this means for you</h3>
+<p>This chapter is the check on the previous two. Before trusting a graph-based prediction inside agentic search v4, or reporting one to a user, ask the four questions this chapter raises in order.</p>
+<p>First, what hidden assumption is baked into the method, and can you name it the way Glass named the SWEET and BONOBO scale factor? If you cannot, do not trust the headline accuracy number at face value.</p>
+<p>Second, does a citable paper actually exist for this method, or only a conference abstract? GIMME is the caution here: an architecture can be exactly right and still be unverifiable until the paper shows up. Treat "talk description only" claims as leads to verify, not facts to cite.</p>
+<p>Third, was the method evaluated on a source it never trained on? The ASD transfer-learning talk is the general case of the evaluation discipline this whole part depends on: in-distribution performance is the easiest number to inflate and the least useful one to report.</p>
+<p>Fourth, is this actually a prediction problem, or is it a representation problem in disguise? Cat-VRS's answer, define the category precisely and let matching do the work, is often cheaper and more trustworthy than training a model to infer membership. When agentic search v4 needs to match an entity to a broader class, ask whether a composable-constraint definition beats a learned classifier before reaching for the graph-prediction machinery in chapters 8 and 9.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Cat-VRS: scalable representation of categorical genomic variation</td><td>12:00-12:20</td><td>Paper verified</td></tr>
+    <tr><td>GIMME: graph inference for microbial metabolism exploration</td><td>15:40-16:00</td><td>No public paper found (verified)</td></tr>
+    <tr><td>Transfer learning for detecting Autism Spectrum Disorder using AutDB</td><td>12:10-12:20</td><td>No public paper found (verified)</td></tr>
+    <tr><td>Challenges and opportunities in single-sample network modeling</td><td>15:50-16:00</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- CHAPTER 11 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-11" data-chapter="11">
+<div class="part-heading">Part 4: Open, trustworthy, reusable science</div>
+<span class="chapter-number">Chapter 11</span>
+<h2>FAIR data infrastructure and metadata standards</h2>
+
+<h3>What is FAIR data infrastructure?</h3>
+<p>FAIR means data that is Findable, Accessible, Interoperable, and Reusable. It is a set of principles, not a piece of software. The six talks in this chapter are what happens when different teams each build the actual plumbing that turns that principle into something you can run.</p>
+<p>Think of it as a stack. At the bottom, someone has to write down what a dataset actually is, in a form a machine can parse. One layer up, someone has to make thousands of those descriptions say the same thing the same way. Above that, someone has to package the whole submit-validate-discover cycle as reusable software instead of one-off engineering. And at the top, someone has to get separate institutions to agree on shared identifiers so their data hubs can talk to each other at all. This chapter walks the stack bottom to top.</p>
+
+<h3>Why does it exist?</h3>
+<p>Every research consortium hits the same wall. A dataset arrives with metadata that is either missing, wrong, or written in free text that means something different to every reader. Writing good metadata usually requires programming skill or filling out a rigid form, so people skip it or do it badly. That single failure cascades: search cannot find the data, harmonization across studies breaks, and any AI system built on top inherits noisy, ungrounded input.</p>
+<p>The problem shows up at every scale. A single dataset needs a metadata record (Session: "MEDFORD in a box: improvements and future directions for a metadata description language", Noah Daniels, Lincoln West). A repository of 270,000 gene expression studies needs harmonized annotations across all of them (Session: "MetaHQ and Meta2Onto: standardized annotations of public transcriptomics data", Parker Hicks, Lincoln West). A consortium building a data hub from scratch re-solves access control and metadata capture every time (Session: "Canopy: an open-source platform for FAIR research data hubs", Marcos Martínez-Romero, Lincoln West). A distributed AI research team needs a shared vocabulary so its outputs are catalogable at all (Session: "Templated collaborative science resources for FAIR and reproducible AI research products", Hilmar Lapp, Lincoln West). NIH funds dozens of repositories that were each built in isolation and cannot yet interoperate (Session: "The Common Fund Data Ecosystem (CFDE) Incubator for Pan-NIH resources", Julie Jurgens, Broad Institute, Lincoln West). And a specific data type, biomarkers, needs a representation precise enough to support real reasoning, not just loose association (Session: "A FAIR framework for structured biomarker representation", Maria Kim, Lincoln West).</p>
+<p>None of these are the same problem. They are the same problem at six different zoom levels.</p>
+
+<h3>How does it work?</h3>
+<div class="mermaid">
+flowchart BT
+    A[Free-text metadata] --> B[MEDFORD: one record, plain language]
+    B --> C[MetaHQ / Meta2Onto: harmonize thousands of records]
+    C --> D[Canopy: whole data hub, submit to reuse]
+    D --> E[CFDE Incubator: connect hubs across NIH]
+    F[BiomarkerKB: precise domain representation] --> E
+    G[Collaborative Distributed Science Guide: document the artifacts] --> E
+</div>
+
+<h4>Layer 1: writing one record</h4>
+<p>MEDFORD is a plain-text markup language for scientific metadata, built for people who are not programmers. MEDFORD-in-a-Box adds an updated parser that checks a record is well formed, a visual editor extension for live feedback while typing, and a macro syntax so a block of metadata you define once can be reused instead of retyped. The goal, in the project's own words, is metadata that is correct, consistent, and reusable, which is the precondition for reproducibility. The improvements also add BagIt export, a standard packaging format for transporting data.</p>
+
+<h4>Layer 2: harmonizing thousands of records</h4>
+<p>MetaHQ and Meta2Onto tackle the same problem at the scale of public transcriptomics data. Repositories like GEO and SRA hold millions of samples described in inconsistent free text, so "liver" and "hepatic tissue" never resolve to the same concept unless someone forces them to. MetaHQ pulls hand-curated annotations from 13 separate sources and harmonizes them into one database covering tissue, disease, sex, and age for nearly 200,000 samples, with a reference back to each original source so a user can still cite it. Manual curation cannot keep pace with data growth, so Meta2Onto adds txt2onto, a lightweight, interpretable text model that predicts standardized tissue and disease terms directly from raw metadata for over 270,000 GEO studies. Interpretable here means the tool shows which words drove each prediction and how confident it is, so a user can decide whether to trust a machine-generated annotation the same way they would judge a human one.</p>
+
+<h4>Layer 3: packaging the whole data hub</h4>
+<p>Canopy takes the same problem up one more level. Instead of harmonizing metadata within an existing repository, it packages the entire submit-validate-discover-reuse cycle as reusable open-source software, extracted from the production NIH RADx Data Hub. It enforces structured metadata with CEDAR templates (fill-in-the-blank forms that force every dataset to carry the same fields), links terms to controlled vocabularies from BioPortal so a concept maps to one shared identifier instead of free text, and uses a common data element framework, implemented as parameterizable operations with automated tracking, so harmonization decisions are recorded rather than lost. It has been stress-tested at NIH scale, close to 200 studies from over 100 organizations across four programs, and is released under a permissive open-source license.</p>
+
+<h4>Layer 4: connecting the hubs</h4>
+<p>Even with well-built individual hubs, NIH-funded repositories were built in isolation and do not talk to each other. The Common Fund Data Ecosystem Incubator, held July 9 to 10, 2026 in Bethesda, gathered leaders of NIH-funded repositories and knowledgebases to find shared standards, shared embeddings (numeric vectors representing a gene or concept so different resources can align entities mathematically), and shared protocols. The CFDE this sits on top of is not small: as of March 2026 it integrates 18 NIH Common Fund programs, offering access to over 10 million files, 2.1 million biosamples, and 1.25 million knowledge graph assertions across 16 programs. The Incubator's job was to find the gaps blocking those programs from composing into one system and propose pilot projects to close them.</p>
+
+<h4>A parallel track: documenting the artifacts, and one domain done precisely</h4>
+<p>Two more talks round out this layer. The Collaborative Distributed Science Guide gives distributed AI research teams a shared vocabulary and step-by-step workflow, version control, FAIR repositories on GitHub and Hugging Face, and templates for READMEs, model cards, and dataset cards. A model card is a short standard document describing what a model does, how it was trained, and its limits. A companion serverless catalog app pulls straight from the GitHub and Hugging Face APIs and only rewards products that follow the guide, which nudges a team toward FAIR without a mandate.</p>
+<p>BiomarkerKB is what FAIR looks like applied precisely to one data type. Existing knowledge graphs record loose links like "gene X relates to disease Y" but miss the measurable change that actually defines a biomarker under the NIH-FDA definition. BiomarkerKB instead structures each biomarker around core fields (the entity, the condition, the exposure agent) plus contextual metadata (specimen, biomarker role, evidence, provenance), built on the Biolink data model and integrated with the Common Fund Data Ecosystem's own knowledge graph. In its initial release it holds over 300,000 nodes, 1.2 million edges, and more than 200,000 biomarker-disease associations, all queryable in Neo4j.</p>
+
+<h3>What this means for you</h3>
+<p>The pattern repeats at every layer: normalize identifiers and structure at ingest time, not after the fact, and record provenance as a first-class field rather than an afterthought. That is true whether you are writing one MEDFORD record or building a cross-NIH registry. If a retrieval system pulls documents whose metadata is thin or inconsistent, both retrieval precision and citation quality suffer downstream, no matter how good the reasoning layer on top is.</p>
+<p>The other transferable lesson is where AI genuinely helps versus where it just accelerates existing structure. Meta2Onto's interpretable, confidence-scored predictions are useful precisely because they are auditable, not because they replace curation. A prediction with no visible reasoning is not a shortcut, it is a new source of silent error. Any pipeline that structures free text at scale should carry the same discipline: show the evidence for the structure, not just the structure itself.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>MEDFORD in a box: improvements and future directions for a metadata description language</td><td>11:05-11:20</td><td>Paper verified</td></tr>
+    <tr><td>MetaHQ and Meta2Onto: standardized annotations of public transcriptomics data</td><td>11:05-11:20</td><td>Paper verified</td></tr>
+    <tr><td>A FAIR framework for structured biomarker representation</td><td>12:20-12:40</td><td>Paper verified</td></tr>
+    <tr><td>Canopy: an open-source platform for FAIR research data hubs</td><td>14:20-14:40</td><td>Paper verified</td></tr>
+    <tr><td>Templated collaborative science resources for FAIR and reproducible AI research products</td><td>14:40-15:00</td><td>Paper verified</td></tr>
+    <tr><td>The Common Fund Data Ecosystem (CFDE) Incubator for Pan-NIH resources</td><td>14:40-15:00</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 12 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-12" data-chapter="12">
+<div class="part-heading">Part 4: Open, trustworthy, reusable science</div>
+<span class="chapter-number">Chapter 12</span>
+<h2>Consent, licensing, and sensitive data</h2>
+
+<h3>What is it?</h3>
+<p>FAIR data assumes reuse is the goal. But some data cannot simply be made open: a patient's genome, a participant's consent preferences, a dataset's legal terms of use. This chapter covers three talks that each encode a different kind of boundary into a computable, machine-readable form instead of leaving it buried in a PDF or a human memory. One gives a mental model for what "open" should even mean when data is sensitive. One builds the software that captures a person's actual consent choices and keeps them current. One audits whether the licenses attached to 39 real biomedical data sources actually permit the reuse everyone assumes is fine.</p>
+
+<h3>Why does it exist?</h3>
+<p>A knowledge graph or an AI system that ingests biomedical data eventually touches something a person did not unconditionally agree to share, or something licensed under terms that quietly forbid the use it is being put to. Three different failure modes follow from ignoring this:</p>
+<p>Ambiguity failure: without a shared framework, every consortium reinvents its own definition of "open enough," and reviewers, funders, and institutions cannot compare access policies across projects (Session: "As open as possible; as closed as necessary: rethinking data sharing frameworks in the genomic era", Mallory Freeberg, Lincoln West).</p>
+<p>Consent-drift failure: a participant consents once at enrollment, then the world and the study both change, but paper consent forms cannot be updated, so either the data goes stale or the participant's actual current wishes get ignored (Session: "CTRL: a dynamic open source e-consent platform for genomic health research", Sarah Kummerfeld, Lincoln West).</p>
+<p>License-blindness failure: an AI research pipeline pulls from dozens of data sources with different licenses, no one checks compatibility, and the resulting model or dataset inherits a legal landmine no one can see until it is a problem (Session: "Legal interoperability as infrastructure: a case study of the Biomedical Data Translator", Shilpa Sundar, Lincoln West).</p>
+
+<h3>How does it work?</h3>
+<div class="mermaid">
+flowchart LR
+    A[Sensitive human data] --> B[Openness framework: what layer can be open?]
+    A --> C[Consent platform: what did this person actually agree to?]
+    D[External data sources] --> E[License audit: what does the license actually permit?]
+    B --> F[Governed, computable reuse]
+    C --> F
+    E --> F
+</div>
+
+<h4>A framework for what "open" even means</h4>
+<p>Freeberg's talk reframes openness as a stack with four separate layers, and argues each layer can be open or closed independently: the data itself, the standards used to describe it, the software used to process it, and the governance structures around it. A project can (and often should) keep raw data access-controlled while making its standards, its software, and its governance fully open. DECIPHER, a rare disease genomic data platform, and the European Genome-phenome Archive (EGA) are used as concrete case studies of this layered model in practice. The talk also points to the Federated EGA Network, a system where sensitive data never physically moves. Instead, approved analyses run inside each local, controlled environment and only aggregate, non-identifying results leave, which is a structural way to get research value out of data that legally or ethically cannot be centralized.</p>
+
+<h4>Making consent itself dynamic and machine-readable</h4>
+<p>CTRL solves the opposite half of the same problem: once a governance layer decides data can be shared under certain conditions, how does the system know what conditions a specific person actually agreed to, today, not at enrollment three years ago? CTRL is an open-source e-consent platform with two portals, one for researchers managing a study's consent requirements and one for participants managing their own preferences. It integrates with a bioethics ontology so consent choices are recorded in a standardized, machine-actionable form, not free text, which means a downstream data access system can programmatically check "is this specific reuse covered by this specific person's current consent" instead of a human re-reading a form.</p>
+<p>The honest complication, confirmed by an evaluation study of the platform, is that dynamic consent only works if people actually use it. In practice only about 15 percent of eligible participants registered on the platform at all, and most who did register logged in once, set preferences, and never revisited them, regardless of whether the study was run by a nonprofit or a commercial sponsor (nonprofit studies did see a notably higher opt-in rate near 80 percent, versus about 45 percent for commercial ones). Dynamic consent, as designed, assumes ongoing engagement. The evaluation data shows that assumption does not hold for most participants once the initial choice is made.</p>
+
+<h4>Auditing whether licenses actually permit reuse</h4>
+<p>Sundar's talk takes the license layer of Freeberg's stack and stress-tests it against a real system: the Biomedical Data Translator, a federated knowledge graph reasoning platform that pulls from many independent data sources. The audit checked the licenses on all 39 of the Translator's data sources and found a genuinely mixed picture: 19 permissively licensed, 6 under ShareAlike terms (which require anything built using that data to be released under the same license, a condition that can "contaminate" a downstream product's licensing without anyone noticing), 12 under commercially restrictive terms, and 2 with no clear license status at all. This connects to an earlier, broader audit by the (Re)usable Data Project, which reviewed 56 biomedical resources and found similarly uneven licensing practices across the field. The takeaway is not that the Translator did something wrong. It is that legal interoperability has to be actively audited, the same way technical interoperability is, because licensing incompatibility is invisible until an actual downstream use triggers it.</p>
+
+<h3>What this means for you</h3>
+<p>Any provenance record worth keeping needs three additional computable fields, not just source and timestamp: consent status, license terms, and the population or context the data came from. These three, per this chapter, are exactly the fields that quietly fail when left as prose in a PDF instead of structured metadata. This is also where the <code>ai-security-standards</code> rule's restricted-data-category list (PII, PHI, dbGaP controlled access data) stops being an abstract compliance requirement and becomes a concrete design decision: which layer of a system is allowed to touch which data, and can the system prove it programmatically rather than by policy memo.</p>
+<p>The CTRL evaluation data is worth sitting with a moment longer. Building the machine-readable capability to check consent dynamically does not by itself produce dynamic consent, because most participants will not return to update preferences after their first visit. A consent platform's real design problem is not the ontology integration, it is getting a busy person to come back.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>As open as possible; as closed as necessary: rethinking data sharing frameworks in the genomic era</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+    <tr><td>CTRL: a dynamic open source e-consent platform for genomic health research</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+    <tr><td>Legal interoperability as infrastructure: a case study of the Biomedical Data Translator</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 13 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-13" data-chapter="13">
+<div class="part-heading">Part 4: Open, trustworthy, reusable science</div>
+<span class="chapter-number">Chapter 13</span>
+<h2>AI in the curation and quality pipeline</h2>
+
+<h3>What is it?</h3>
+<p>Five talks, one underlying question: where in a real curation or compliance pipeline does AI genuinely save time, and where does it need a human, or a cheap secondary check, standing between it and production. The five talks trace an actual pipeline shape: raw material gets captured (poster scraping), screened for quality before anything expensive happens to it (a lightweight classifier), then AI attempts structured extraction or drafting on top of it (compliance documents, protocol structures), with a human validation layer framing the whole thing as a defined professional skill, not an afterthought bolted on at the end.</p>
+
+<h3>Why does it exist?</h3>
+<p>Curators cannot keep up with literature growth by hand (Session: "The critical role of human validation in the era of AI-assisted biocuration", Patricia Carvajal-López, Lincoln West). Grant compliance writing, specifically data management plans, is a slow, repetitive bottleneck that AI looks well suited to draft (Session: "Evaluating the performance of LLMs in drafting data management plans", Nahid Zeinali, Lincoln West). Highly specialized extraction tasks, like pulling structured protocol details out of a sequencing library prep description, look automatable on the surface but turn out to expose a real gap between memorization and genuine comprehension (Session: "Toward domain-specific genomic AI agents: an evaluation of LLM understanding of sequencing library structures", Chi-Lam Poon, Lincoln West). Before any of that AI processing happens, someone has to capture the raw material, in this case scientific posters, in a structured form at all (Session: "Posters.science: building open infrastructure for poster metadata and content", Bhavesh Patel, Lincoln West). And once that raw material exists, a lot of it is low quality or off-topic, so a cheap upfront filter matters more than a sophisticated downstream model (Session: "PosterSentry: a lightweight classifier for scientific poster quality screening", James O'Neill, Lincoln West).</p>
+
+<h3>How does it work?</h3>
+<div class="mermaid">
+flowchart LR
+    A[Posters.science: capture raw posters] --> B[PosterSentry: screen for quality]
+    B --> C[Downstream extraction and search]
+    D[Protocols and grant text] --> E[LLM drafts structure]
+    E --> F[Human or expert validates]
+    F --> G[Trusted structured output]
+</div>
+
+<h4>Capturing the raw material</h4>
+<p>Posters.science is the layer everything else in this chapter depends on. Conference posters are a huge, mostly invisible body of scientific output, usually a PDF that gets presented once and then disappears. The project builds open infrastructure to change that: an LLM-driven pipeline extracts a structured poster.json record from each poster PDF (title, authors, abstract, key findings, methods), and a separate step canonicalizes author affiliations against ROR, the Research Organization Registry, so "MIT," "Massachusetts Institute of Technology," and a department-level address all resolve to the same institution identifier. The registry already holds more than 1,500 posters. Without this capture step, none of the later screening or extraction work in this chapter has anything to run on.</p>
+
+<h4>Screening before anything expensive happens</h4>
+<p>PosterSentry sits right after capture. Not every captured poster is worth running through an expensive downstream pipeline, some are low quality, off-topic, or malformed. Instead of using a large model to make that call, PosterSentry uses a tiny logistic regression classifier, about 10 kilobytes, trained on structural and content features rather than deep semantic understanding, and reaches 87.3 percent accuracy on the quality-screening task. The point of the talk is not that a tiny classifier beats a large model on raw capability, it does not, but that it is cheap enough to run on every single item before anything expensive touches it. A guardrail only works if it is cheap enough to actually put in front of everything.</p>
+
+<h4>Drafting compliance documents, and where it falls short</h4>
+<p>Zeinali's talk moves from screening to generation: can an LLM draft a data management plan, the compliance document every NIH grant now requires, well enough to save a researcher real time. The evaluation compared GPT-4 against Llama 3.3, an openly available model, using a structured drafting pipeline called DMP Chef and expert human scoring of the outputs against NIH requirements. GPT-4 outperformed the open model by a meaningful margin, which matters because it means the choice of underlying model is not incidental to whether this kind of drafting assistance is actually usable, a weaker open model produced a weaker draft that needed more human rework to reach compliance.</p>
+
+<h4>Where extraction genuinely fails: memorization versus comprehension</h4>
+<p>Poon's talk is the sharpest cautionary result in this chapter. It tests nine frontier language models against 13 ground-truth sequencing library structures drawn from a real reference resource (scg_lib_structs), measuring how accurately each model can extract the correct structural components of a library preparation protocol, scored with Levenshtein similarity, a string-distance metric. Scores landed around 0.80 to 0.84, which sounds respectable until the pattern underneath it is examined: models performed noticeably better on well-known, widely documented commercial kits (the kind of protocol that appears verbatim across thousands of papers and forum posts a model was trained on) than on less common academic protocols that require actually reasoning through the structure rather than recalling a memorized description. A model that scores well on a familiar protocol and poorly on an unfamiliar one of the same type is demonstrating retrieval of training data, not domain understanding, and a pipeline that cannot tell the two apart will silently degrade the moment it meets a protocol outside the model's training distribution.</p>
+
+<h4>Naming the human role explicitly</h4>
+<p>Carvajal-López's talk is the frame that ties the other four together. Roughly 100 to 200 professional biocurators exist worldwide, facing literature growth that has long outpaced what manual curation alone can cover. The talk extends a formal competency framework from the International Society for Computational Biology to explicitly include AI literacy as a curator skill, not a replacement for curation. It cites concrete evidence for where the human-in-the-loop model already works at scale: InterPro has over 3,000 LLM-generated protein family descriptions in production, and GOFlowLLM reaches an 86.7 percent agreement rate between AI-extracted annotations and expert curators on Gene Ontology extraction tasks. The framing throughout is that AI handles the routine, high-volume first pass, and curators retain critical evaluation and domain judgment, which is a job description, not a stopgap.</p>
+
+<h3>What this means for you</h3>
+<p>Read across all five talks and the same shape recurs: AI produces a strong first draft or a fast first pass, and a validation step, whether that is a trained human curator, a cheap upfront classifier, or an expert scoring rubric, decides whether that draft ships. The Poon result is the one to sit with longest, because it shows this gate matters even for tasks that look purely mechanical. Structured extraction from a well-known protocol type can look reliable in aggregate while quietly failing on exactly the inputs a real system will eventually see, unfamiliar, poorly documented, or genuinely novel ones. This is the same discipline the <code>nws-production-standards</code> cite-or-refuse gate encodes for AI answer generation: a confident-looking output is not evidence of a correct one, and the gap only shows up when you test the edge, not the average case.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>The critical role of human validation in the era of AI-assisted biocuration</td><td>15:00-15:20</td><td>Paper verified</td></tr>
+    <tr><td>Evaluating the performance of LLMs in drafting data management plans</td><td>15:20-15:40</td><td>No public paper found (verified)</td></tr>
+    <tr><td>Toward domain-specific genomic AI agents: an evaluation of LLM understanding of sequencing library structures</td><td>15:20-15:40</td><td>No public paper found (verified)</td></tr>
+    <tr><td>PosterSentry: a lightweight classifier for scientific poster quality screening</td><td>15:20-15:40</td><td>Paper verified</td></tr>
+    <tr><td>Posters.science: building open infrastructure for poster metadata and content</td><td>14:40-15:00</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 14 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-14" data-chapter="14">
+<div class="part-heading">Part 4: Open, trustworthy, reusable science</div>
+<span class="chapter-number">Chapter 14</span>
+<h2>The closing culture debate</h2>
+
+<h3>What is it?</h3>
+<p>The BOSC track's final block was not another tool talk. It was three sessions asking what happens to open-source bioinformatics culture itself once AI assistants become part of how people write documentation, ask questions, and solve problems day to day. One talk shows AI genuinely strengthening an open training resource. One talk argues AI chatbots are quietly hollowing out the public spaces that used to teach people bioinformatics for free. The closing panel puts both arguments in the same room.</p>
+
+<h3>Why does it exist?</h3>
+<p>Every other chapter in this Part is about making data and workflows more open and more trustworthy. This chapter is about whether the culture that produces open, trustworthy science can survive contact with the tools built to help it. Training materials need constant maintenance and translation, a genuinely hard, unglamorous, ongoing task (Session: "Using AI to develop, maintain, and translate bioinformatics training materials", Geraldine Van der Auwera, Lincoln West). At the same time, the venues where people used to ask "how do I do this" in public, and get an answer other people could later find and learn from, are being replaced by private one-on-one chatbot conversations that leave no public trace (Session: "Learning in public, losing in private?", Van Quynh Truong, Lincoln West). And the field's leaders were asked to debate what all of this means for open source specifically, not open science in general (Session: "Open source in the age of AI", panel discussion, Lincoln West).</p>
+
+<h3>How does it work?</h3>
+<div class="mermaid">
+flowchart TD
+    A[A bioinformatics question] --> B{Where does it go?}
+    B -->|Before AI, common path| C[Public forum: Biostars, Stack Overflow, GitHub Issues]
+    C --> D[Answer indexed, searchable, reused by others later]
+    B -->|Now, common path| E[Private chatbot conversation]
+    E --> F[Answer given once, never indexed, never reused]
+</div>
+
+<h4>The optimistic case: AI as a maintenance force multiplier</h4>
+<p>The Nextflow training project, hosted at nextflow-io/training, treats AI as infrastructure for a specific, chronic maintenance problem: keeping a large body of technical training material accurate and available in multiple languages as the underlying software keeps changing. It defines reusable "skills," in effect standing prompt templates encoding how a specific kind of edit should be made, so a maintainer does not have to re-explain house style and technical constraints every time. Code examples inside the material are validated by actually running them in containers before merging, so an AI-suggested edit cannot silently introduce a broken example. For translation specifically, the project adopted a deliberate discipline: when a translated version reads wrong, the fix is to correct the prompt that generates that class of translation, not to hand-patch the one broken output. That keeps the fix reproducible across the whole document set instead of being a one-off patch that will need repeating the next time the source material changes. The material is maintained in ten languages under this model.</p>
+
+<h4>The pessimistic case: what gets lost when help moves private</h4>
+<p>Truong's talk argues that public technical forums, Biostars, Stack Overflow, GitHub Issues, were never just Q&amp;A archives. They did five things at once that a private chatbot conversation cannot replicate: ambient mentorship (a newcomer absorbs norms by watching how questions get answered, not just reading the answer), peer validation (other experts can correct a wrong answer in public, so bad advice gets caught), collective memory (the same question, answered once, helps everyone who searches it later, not just the original asker), granular resource authority (a well-answered thread becomes a trusted reference people link to), and decentralized tool control (no single company mediates who can ask or answer). When help moves into a private chatbot session, none of these five survive: the exchange is not searchable, not peer-reviewed, not reusable, and mediated entirely by whichever company runs the assistant.</p>
+<p>The talk names a sharper risk than "old habits fading": liability without ownership. An AI assistant can generate a plausible, wrong technical answer, and unlike a wrong answer on a public forum, no other expert is positioned to publicly correct it before the asker acts on it. The talk proposes five counters, largely mirror images of what was lost: deliberately capturing and publishing useful AI-assisted exchanges, building peer review back into AI-assisted workflows, and preserving public spaces as the default rather than the fallback.</p>
+
+<h4>The debate: what open source specifically owes</h4>
+<p>The closing panel drew four named panelists, Aida Miro-Herrans, Nahid Zeinali, Alex Bateman, and Eric Green, moderated by Jason Williams. Its stated scope was narrower and sharper than "AI and open science" in general: what does open source specifically owe when an AI agent can now write, propose, or even merge code into a shared project. The BOSC program frames the debate around four concrete tensions: how much of a contribution an AI can make before attribution becomes murky, who is accountable when an AI-authored pull request introduces a scientific error, whether AI-assisted contributions threaten or strengthen a project's long-term sustainability, and whether existing code-review norms are enough to catch AI-introduced mistakes before they ship. As a panel discussion, it has no accompanying paper, deliberately: this was convened as an open debate, not a study with a result to report.</p>
+
+<h3>What this means for you</h3>
+<p>Put next to each other, these three sessions are not a contradiction, they are the same shift viewed from two vantage points plus a live argument about what to do about it. The Nextflow project shows AI can strengthen an open resource when the fix targets the reproducible cause (the prompt, the template) rather than patching the symptom. Truong's talk shows the same technology quietly draining the public commons that made open-source bioinformatics culture self-teaching in the first place, not through malice, just through convenience: a private answer is faster to get than a public one, even when it is worse for everyone else.</p>
+<p>For anyone building an AI system that touches open science, including agentic search v4, the practical takeaway is to treat "does this interaction leave a public, reusable trace" as a design question, not an afterthought. A system that answers a question and discards the exchange is optimizing for the asker's five minutes at the cost of the next person's search. The "fix the prompt, not the output" discipline from the training-materials talk is also directly reusable: any correction to an AI-assisted process should target the reproducible cause of the error, not the one instance of it, or the same error just resurfaces at the next release.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Using AI to develop, maintain, and translate bioinformatics training materials</td><td>15:40-15:50</td><td>Paper verified</td></tr>
+    <tr><td>Learning in public, losing in private?</td><td>15:50-16:00</td><td>No public paper found (verified)</td></tr>
+    <tr><td>Open source in the age of AI</td><td>16:40-17:40</td><td>No public paper found (verified)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- CHAPTER 15 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-15" data-chapter="15">
+<div class="part-heading">Part 5: The bigger picture</div>
+<span class="chapter-number">Chapter 15</span>
+<h2>The keynote arc</h2>
+
+<p>Three distinguished keynotes opened Monday, Tuesday, and Wednesday of ISMB 2026. Read back to back, they trace one continuous zoom: from the molecular wiring inside a single cell, out to a health system trying to serve everyone equally, out further to the deep demographic history that shaped every genome in the room. Each speaker answered a different question, but the three questions turn out to be one question asked at three different scales: what can we predict, who can we predict it for, and how did the population we are predicting for come to exist.</p>
+
+<h3>What is the keynote arc?</h3>
+<p>The three talks, in the order they were given:</p>
+<ul>
+<li>Olga Troyanskaya (Monday): models that connect DNA sequence, gene regulation, molecular networks, and clinical outcomes into one predictive picture of disease.</li>
+<li>Carlos Bustamante (Tuesday): the infrastructure and equity work needed to make precision health work for populations that current genomic medicine underserves.</li>
+<li>Partha Majumder (Wednesday): a genome-scale reconstruction of how India's population history shapes disease risk and drug response today.</li>
+</ul>
+<p>None of the three talks cites the other two. But sequencing them across three days builds an argument by accident: a predictive model is only as good as the population it was trained on, and that population carries a history which determines who the model actually works for.</p>
+
+<h3>Why does it exist?</h3>
+<p>Precision medicine has a scaling problem hiding inside its own name. Precision implies the model is precise for you, specifically, not for a demographic average. But most of the training data underlying genomic medicine comes from a narrow slice of humanity, chiefly people of European ancestry, so the precision many tools deliver is precise for that slice and unreliable for everyone else. Closing that gap needs three separate things, working together. First, a model good enough to predict disease mechanisms at all, which is Troyanskaya's talk. Second, infrastructure that actually captures data from the populations genomic medicine has historically left out, which is Bustamante's talk. Third, a way to formally account for the deep, non-random structure hiding inside any human population, structure that changes how a genetic association should be read in the first place, which is Majumder's talk. Skip any one of the three and the other two stay incomplete: a precise model trained on the wrong population is still wrong, and a well-sampled population whose internal structure nobody accounted for still misleads.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Molecule to disease models] --> B[Precision health at scale]
+    B --> C[Population history depth]
+</div>
+
+<h3>How does it work?</h3>
+
+<h4>Predictive models of human biology and disease</h4>
+<p>Troyanskaya's keynote presented a stack of model families, each aimed at a different scale of biology, chained together into one picture. At the bottom, models read a genetic variant and predict its biochemical and regulatory effect, so a mutation is understood as a mechanism, not just a coordinate on a chromosome. Above that, network-aware models simulate how a perturbation, such as knocking out a gene, ripples through cellular circuits in software rather than in a wet lab. Above that again, genetics-informed phenotype models link those molecular programs to disease subtypes and clinical trajectories. The headline model from her lab, named Mahi, integrates chromatin accessibility, transcription factor binding, histone modifications, and protein structure features across 290 tissues and cell types, and it was validated by predicting gene essentiality across 1,183 cancer cell lines, beating sequence-only models at that task.</p>
+<p>The talk's closing line was the one that mattered most for the rest of the conference: the next frontier is pairing these predictive models with verifiable, agentic AI systems that reason over biological evidence, propose and test hypotheses, and keep that reasoning transparent and reproducible. A distinguished keynote naming agentic, verifiable AI as the field's stated destination, on day one, set the tone every later agentic talk built on.</p>
+
+<h4>Precision health at scale for all</h4>
+<p>Bustamante's keynote named the actual bottleneck behind precision medicine's equity gap: most reference genomic data was never collected from most of the world. The Galatea Bio biobank he described was built specifically to correct that. At founding, under 1 percent of global biobank samples came from people of Latin American ancestry, against roughly 90 percent from European ancestry. Galatea Bio is a CAP-accredited biobank sized for 10 million DNA samples, holding about 500,000 today with a projected 1 million by year end, sequenced on Illumina NovaSeq 6000 and NextSeq 2000 platforms and paired with AI and machine learning models over clinical, genomic, and epidemiological data.</p>
+<p>The concrete example that made the equity gap tangible: Puerto Ricans have the highest asthma rates in the Americas, but the lowest response to albuterol, a first-line asthma medication. That is not a coincidence of biology in the abstract. It is a genetic ancestry effect on drug response that a narrow, European-ancestry reference dataset would never have surfaced, because the people affected were never in the dataset to begin with. Bustamante's frame for fixing this: build large genomic resources that deliberately sample diverse ancestries, pair them with genotype-to-phenotype discovery methods, and connect academia, healthcare, industry, and government so a learning health system, one that improves as it accumulates patient data over years rather than snapshots, actually has data to learn from.</p>
+
+<h4>Uncovering the palimpsest of India's population history</h4>
+<p>Majumder's keynote is a genome-scale demonstration of why population structure is not a footnote to a genetic finding, it is part of the finding. India has roughly 400 tribal groups and more than 4,000 caste and subcaste groups, the great majority of them endogamous, meaning people marry within the group. That structure hides an enormous amount of genetic history, and you cannot read it off a single population or a single gene.</p>
+<p>A palimpsest is a manuscript that has been scraped and rewritten many times, where older text still shows faintly through the newer layer. The genome works the same way: each migration and admixture event leaves a faint trace underneath the next. Majumder's group's foundational analysis, published in PNAS in 2016, resolved mainland India into four distinct ancestral components, not the two that earlier work had inferred, plus a fifth component specific to the Andaman and Nicobar Islands that is likely ancestral to Oceanic populations as well. The same analysis dated a sharp shift from wide admixture to strict endogamy to roughly 70 generations ago, concentrated among Indo-European-speaking upper castes. Once that structure exists, it is not just history. It is present-tense clinical signal: disease susceptibility and drug response differ measurably by ancestry, the same way Bustamante's Puerto Rican asthma example plays out on a different population.</p>
+
+<h3>What this means for you</h3>
+<p>Read together, these three keynotes make a case that is easy to miss when the talks are read in isolation. A model can be architecturally excellent, like Mahi, and still fail a population it was never trained to represent. A biobank can be well designed, like Galatea Bio, and still take years to correct decades of skewed collection. And a population's genetic structure, like India's caste and tribal endogamy, can sit invisible under a genomic finding for years before anyone accounts for it. None of these is a problem you fix once. They are three separate, ongoing disciplines, model-building, infrastructure-building, and population-structure accounting, and precision medicine only works when all three keep running at once. If you are building or evaluating a biomedical AI system, the practical habit this arc argues for is simple: treat the population a claim was measured in as part of the claim itself, not a footnote you can drop.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>Keynote: toward predictive models of human biology and disease (Olga Troyanskaya)</td><td>09:00-10:00, Monday</td><td>Paper verified</td></tr>
+    <tr><td>Keynote: Enabling precision health at scale for all (Carlos D. Bustamante)</td><td>09:00-10:00, Tuesday</td><td>Paper verified</td></tr>
+    <tr><td>Keynote: Uncovering the palimpsest of India's population history (Partha P. Majumder)</td><td>09:00-10:00, Wednesday</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 16 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-16" data-chapter="16">
+<div class="part-heading">Part 5: The bigger picture</div>
+<span class="chapter-number">Chapter 16</span>
+<h2>Methods and infrastructure</h2>
+
+<p>Thursday of ISMB 2026 was the conference's methods day, six talks spanning graph machine learning, agentic drug design infrastructure, DNA sequencing chemistry, a quantum computing experiment, structural biology, and a community benchmarking challenge run out of the American Great Plains. On paper these look like six unrelated topics. In practice they are six layers of the same stack, each solving a different piece of the problem of turning raw biological signal into a trustworthy, machine-usable prediction.</p>
+
+<h3>What is the methods and infrastructure layer?</h3>
+<p>Every talk in this chapter answers a version of the same question: how do you get from noisy, high-dimensional biological data to a claim you can act on. The six talks split into two groups.</p>
+<p>Foundational methods, which decide what a model is allowed to represent in the first place:</p>
+<ul>
+<li>Ritambhara Singh, graph machine learning for biomedicine, on treating 3D genome structure and molecular relationships as a graph rather than a flat sequence.</li>
+<li>Mauricio Lisboa Perez, nanopore sequencing of non-canonical bases, on extracting a new class of signal from raw sequencing electrical current.</li>
+<li>Kahn Rhrissorrakrai, quantum-enhanced attention for histopathology, on using a physically different computing substrate to reshape what an attention mechanism can learn.</li>
+<li>Remo Rohs, integrating genomics and structural biology, on predicting 3D shape and protein-DNA binding mechanics directly from sequence.</li>
+</ul>
+<p>Infrastructure and field-building, which decide how those methods get deployed and evaluated at scale:</p>
+<ul>
+<li>Angel Pizarro and Kyle Tretina, BioNeMo, on an agentic workflow layer that chains prediction tools together without a human running each step.</li>
+<li>Iddo Friedberg, bioinformatics in the Great Plains, on CAFA, the multi-decade community benchmark that forces every new protein-function method to prove itself against the same held-out truth.</li>
+</ul>
+
+<h3>Why does it exist?</h3>
+<p>A prediction is only useful if three things are true about it: it is built on a representation that actually captures the structure of the biology, it is generated efficiently enough to run at scale, and it can be checked against ground truth by someone other than the person who built it. The four method talks each attack the first condition from a different angle, sequence, structure, spatial genome organization, and even a different computing substrate entirely. BioNeMo attacks the second condition, since a design-test-learn loop that a human has to babysit at every step does not scale to the volume of candidates modern drug discovery needs to screen. CAFA attacks the third condition directly, and its multi-round history is a working answer to what open science demands elsewhere in this book: a benchmark run the same way for over a decade, with results held to the same held-out standard every round, is what makes a method's improvement claim credible instead of self-reported.</p>
+
+<div class="mermaid">
+flowchart TD
+    A[Raw signal: nanopore, quantum attention] --> B[Structure-aware prediction: Rohs, Singh]
+    B --> C[Agentic orchestration: BioNeMo]
+    C --> D[Community benchmarking: CAFA]
+</div>
+
+<h3>How does it work?</h3>
+
+<h4>From learning to leveraging graphs in biomedicine</h4>
+<p>Singh's talk was framed as a survey of a field transition: biomedicine has spent a decade learning how to build graph neural networks, and the frontier question now is how to leverage that capability on problems flat sequence models cannot touch. The concrete example behind the framing is her lab's work on 3D genome organization. A model called GC-MERGE encodes Hi-C data, a technique that measures which distant regions of a chromosome physically fold close to each other, as a graph, and combines that spatial structure with local histone-modification signals to predict gene expression. A sequence-only model has no way to represent the fact that two genes far apart on a linear chromosome sit next to each other in 3D space and regulate each other because of it. A graph does. That is the general argument the talk makes: any time biology's real structure is relational rather than linear, a graph is the more honest representation, and the field is now mature enough to build on that instead of proving it works from scratch.</p>
+
+<h4>Building AI scientist workflows with BioNeMo</h4>
+<p>The BioNeMo workshop demonstrated an agentic pipeline for biologics design, where a large language model agent decomposes a design task into steps, retrieves relevant literature and database context, and orchestrates structure prediction, molecular simulation, and binding affinity estimation tools in sequence, without a human approving each intermediate step. The closest verified example is a system built for designing biologics against intrinsically disordered proteins, proteins that lack a stable 3D structure and are therefore hard for structure-based tools like AlphaFold or RFdiffusion to handle in the first place. That is a harder case than a standard binder-design pipeline, and using it as the workshop's demonstration example makes a point about generality: if the agentic loop holds up on a target class the underlying structure-prediction tools were not built for, it is likely to hold up on the easier cases too.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Design task] --> B[Agent decomposes steps]
+    B --> C[Retrieve literature/context]
+    C --> D[Orchestrate tools]
+    D --> E[Candidate design]
+    E -->|feedback| B
+</div>
+
+<h4>Enabling direct nanopore sequencing of non-canonical bases</h4>
+<p>Standard DNA sequencing reads the four canonical bases, A, C, G, and T. A growing body of biology, chemically modified bases, damaged DNA, synthetic biology constructs, lives outside that alphabet, and standard basecallers are not trained to recognize it. Perez's talk described a bootstrapped learning method for teaching a nanopore basecaller to read non-canonical bases directly from the raw electrical signal a nanopore device produces as a DNA strand passes through it, using signal splicing to build synthetic training examples rather than requiring bulk quantities of the modified molecule. The team sequenced 1,024 synthetic oligonucleotides at over 90 percent purity, generating more than 2.3 million reads per flowcell, and the non-canonical base signals showed a median fold-change above 6x relative to controls, detected at over 80 percent accuracy and 99 percent specificity. The method turns a sequencing platform's raw physical signal into a new class of readable data, which is the same move, at the chemistry layer, that a graph representation makes at the data-structure layer: extracting signal a simpler method would have thrown away.</p>
+
+<h4>Quantum-enhanced attention for expression prediction from histopathology</h4>
+<p>Attention, the mechanism inside a transformer that decides which parts of an input to weight when making a prediction, is normally computed with a softmax function on classical hardware. Rhrissorrakrai's talk described QDSFormer, a method that replaces that softmax step with a variational quantum circuit, producing what is called a doubly stochastic attention matrix, meaning every row and every column of the attention weights sums to one. That constraint is not achievable exactly with a standard softmax, and the paper behind the talk shows the quantum-computed version outperforms standard vision transformers and other doubly-stochastic-attention variants on image recognition benchmarks, with the largest gains showing up specifically in the data-scarce regime, when there is not much training data to work with. Applied to histopathology, predicting gene expression patterns from a tissue image, that is directly relevant, because biomedical imaging datasets are almost always smaller than the natural-image datasets deep learning was built for. This is the only talk in the chapter that changes the computing substrate itself rather than the representation running on top of it, and it is included here as an early, narrow signal rather than a mature method: it works on small benchmark datasets today, not yet on production-scale histopathology cohorts.</p>
+
+<h4>Integrating genomics and structural biology</h4>
+<p>Rohs's talk connected two methods that both predict something a wet-lab structural experiment would otherwise need to measure directly. Deep DNAshape predicts the 3D shape of a DNA molecule from its sequence alone, considering flanking sequence context of up to seven base pairs on each side, trained on a limited set of molecular simulation data rather than requiring a fresh simulation for every new sequence, which is where its throughput gain comes from. DeepPBS is a bipartite geometric graph neural network, meaning it represents a protein-DNA complex as two connected sets of graph nodes, protein heavy atoms on one side and a symmetrized representation of the DNA helix on the other, and it separates two distinct binding mechanisms, groove readout and shape readout, that determine how a protein recognizes a specific DNA sequence. Its atom-level importance scores correlate with experimental alanine-scanning mutagenesis data at a Pearson correlation of 0.60, benchmarked across 130 protein chains. Together the two methods let a researcher predict both the shape of a DNA target and how a protein will bind it, from sequence alone, without running the physical experiment first.</p>
+
+<h4>Like a chicken in the corn: bioinformatics in the Great Plains</h4>
+<p>Friedberg's talk, titled with a nod to doing serious computational biology from an unglamorous location, used CAFA, the Critical Assessment of Functional Annotation, as its central example of what makes a field-wide benchmark actually work. CAFA has run for multiple rounds over more than a decade, each time scoring every submitted protein-function prediction method against experimentally confirmed function annotations that were withheld from the methods at prediction time. The fifth round, CAFA5, partnered with Kaggle to run the challenge as a public competition, which pulled in a much broader community of data scientists rather than only specialist bioinformaticians, and it reported accuracy improvements over every prior round along with a new evaluation setting testing whether methods can predict which further annotations will be discovered later, not just recover ones already known. That is the structural reason a talk about the Great Plains belongs in a chapter about global methods: the benchmark that keeps the whole field honest does not require a coastal AI lab to run it, it requires a held-out truth set, a consistent scoring rule, and enough discipline to run the same test every round.</p>
+
+<h3>What this means for you</h3>
+<p>The six talks in this chapter argue the same point from six directions: a method is only as good as the representation feeding it, and a representation is only trustworthy once something outside the method that built it has checked it. Graphs, non-canonical base signal, quantum attention, and structural shape prediction are four different ways of getting more honest signal out of raw biological data. BioNeMo's agentic loop is a reminder that once you have several such methods, chaining them into a pipeline is itself an engineering problem, not a solved one, and it inherits every failure mode an agentic system carries anywhere else in this book: it needs the same evidence discipline, the same bounded context, the same human checkpoint at the decisions that matter. And CAFA is the standing argument that none of the other five methods should be trusted on the strength of a single paper's own reported numbers. If you are choosing which of these ideas to bring into your own work, the durable habit is to ask, for any new method, what representation is it exploiting that a simpler method throws away, and what held-out benchmark would tell you if it actually works.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>From learning to leveraging graphs in biomedicine (Ritambhara Singh)</td><td>08:40-09:40, Thursday</td><td>Paper verified</td></tr>
+    <tr><td>Building AI scientist workflows with BioNeMo (Angel Pizarro and Kyle Tretina)</td><td>11:00-13:00, Thursday</td><td>Paper verified</td></tr>
+    <tr><td>Enabling direct nanopore sequencing of non-canonical bases (Mauricio Lisboa Perez)</td><td>12:20-12:30, Wednesday</td><td>Paper verified</td></tr>
+    <tr><td>Like a chicken in the corn: bioinformatics in the Great Plains (Iddo Friedberg)</td><td>14:20-15:00, Thursday</td><td>Paper verified</td></tr>
+    <tr><td>Quantum-enhanced attention for expression prediction from histopathology (Kahn Rhrissorrakrai)</td><td>15:00-15:20, Thursday</td><td>Paper verified</td></tr>
+    <tr><td>Integrating genomics and structural biology (Remo Rohs)</td><td>15:40-16:00, Thursday</td><td>Paper verified</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 17 -->
+<!-- ============================================================ -->
+<section class="chapter" id="chapter-17" data-chapter="17">
+<div class="part-heading">Part 5: The bigger picture</div>
+<span class="chapter-number">Chapter 17</span>
+<h2>Risk and money</h2>
+
+<p>Every field that starts moving fast eventually has to answer two questions that have nothing to do with the science itself: what could go wrong, and who is willing to pay for it to keep going. ISMB 2026 asked both, on the same Tuesday and Thursday, in two very different rooms. One was a talk on relational biosecurity. The other was a venture capital panel. Together they are the closing chapter of this book, because they are the two forces that will actually decide which of the agentic AI, knowledge graph, and open-benchmarking ideas covered in the rest of this book survive contact with the world outside a conference hall.</p>
+
+<h3>What is risk and money, in this context?</h3>
+<p>Michelle Holko's talk on Thursday argued that AI-enabled biology's risk no longer lives inside any single component, a model, a dataset, a lab protocol, but in how components connect to each other, and that current biosecurity safeguards are still built around individual known agents and discrete technologies rather than the compositional systems that now exist.</p>
+<p>The Tuesday venture partner panel, featuring Kristina E. Kitko, Anthony Philippakis, and John Keilty, is a different kind of session entirely. It carries no paper, no data, and no peer review, and this chapter treats it accordingly: as investor commentary on where capital is flowing in AI-driven biology and what makes a computational biology idea fundable, not as verified research. It belongs in this book anyway, because capital allocation is one of the two forces, alongside risk governance, that determines which methods from earlier chapters get built into products people actually use.</p>
+
+<h3>Why does it exist?</h3>
+<p>A field can build the best models and the most rigorous benchmarks in the world and still be shaped entirely by two forces external to the science: whether regulators and the field itself judge it safe enough to keep deploying, and whether investors judge it profitable enough to keep funding. Holko's relational biosecurity framework exists because the field's actual risk surface moved faster than its governance did. Discrete-technology safeguards, built for a world of one dangerous pathogen or one dangerous protocol at a time, do not catch a risk that only appears when several individually benign components are chained together. The VC panel exists for the opposite reason: capital does not wait for governance to catch up, it moves toward whatever looks fundable right now, and understanding where it is moving tells you which parts of this book's technical content are likely to get built out at scale in the near term, regardless of which parts are most scientifically interesting.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Individual component risk] --> B[Compositional system risk]
+    C[Capital allocation] --> D[What gets built at scale]
+    B -.->|governance lags| D
+</div>
+
+<h3>How does it work?</h3>
+
+<h4>AI accelerates biological discovery, are we ready for the risks?</h4>
+<p>Holko's core claim, stated directly: risk no longer resides solely within individual components, but in how they are connected. A generative model that designs a novel biological sequence is not, by itself, necessarily dangerous. A similarity-based screening tool that checks new sequences against known dangerous ones is not, by itself, necessarily inadequate. But chain them together and you get a concrete, cited failure mode: a generative model can produce a novel sequence specifically capable of evading similarity-based synthesis screening, because the screening tool was designed to catch resemblance to known threats, and the generative model's entire function is to produce something that does not resemble anything known. Neither component failed at its individual job. The system failed at the connection between them.</p>
+<p>Holko's proposed framework treats interactions between components as explicit objects of design and governance, not implicit byproducts of integration that nobody is responsible for. Concretely, that means building system-level sensing and monitoring rather than only component-level checks, preserving context and uncertainty as information passes across workflow interfaces instead of letting each stage treat the previous stage's output as ground truth, and building buffering into the pipeline specifically to limit how far an error can propagate once it occurs. This is not a talk about whether AI in biology is dangerous in the abstract. It is a talk about where the safety work has to move to once individual tools stop being the unit of risk and pipelines become the unit of risk.</p>
+
+<h4>Industry workshop: Venture Partner panel</h4>
+<p>This session is explicitly unverified: a panel discussion with no associated paper, no data behind its claims beyond what the panelists said in the room, and no peer review. Nothing in this section should be read as validated research. It is reported here as industry commentary only, because it is the only signal in this book's source material about where investment capital is actually pointed in this field right now.</p>
+<p>The panel discussion, per the pre-conference framing and consistent with the session's stated scope, covered where capital is flowing in AI-driven biology, what makes a computational biology bet fundable from an investor's perspective, and how early-career scientists can move toward entrepreneurship. Read next to Holko's talk, the pairing is not a coincidence of scheduling. A venture investor's fundability bar and a biosecurity researcher's compositional risk framework are answering different questions about the same underlying systems: one asks whether a pipeline of AI tools chained together can make money, the other asks whether that same pipeline can be trusted not to produce a harm nobody designed for. Both questions are about systems, not components, and neither one is answered by the underlying science being sound.</p>
+
+<h3>What this means for you</h3>
+<p>The trade-off this chapter closes on is not new to biomedical AI, but ISMB 2026 stated it unusually plainly across two sessions on two different days. A method can be scientifically excellent and still get built into a product before anyone has done the compositional risk analysis Holko's framework calls for, because capital moves faster than governance. The corrective is not to slow every promising method down until every possible interaction has been mapped, that would stall the field entirely. It is to treat interaction-level risk as a first-class design requirement alongside fundability, not an afterthought bolted on after a product ships. If you are evaluating or building an agentic pipeline anywhere in biomedical AI, the two questions from this chapter are worth asking together, not separately: what does this pipeline do that no individual component in it does alone, and who is paying to make sure that gets built quickly.</p>
+<p>This closes the book's arc. Part 1 established agentic AI as the field's working core, systems that reason over evidence and act on it. Part 2 built the knowledge graph infrastructure those systems reason over. Part 3 showed graphs as prediction engines in their own right, turning relational structure into biological forecasts. Part 4 argued that none of it is trustworthy without open, verifiable science backing it. This part pulled the camera back one more level: three keynotes showed that even a technically excellent model or method is only as good as the population and history it was built on, six methods and infrastructure talks showed the stack of representations and benchmarks that make a prediction credible, and this closing chapter names the two forces, risk and money, that decide which of those ideas actually reach the people they are meant to help. The field's trajectory, across all five parts, points the same direction: toward systems that connect more components, reason over more evidence, and reach more of the population that biomedical AI has historically underserved. Whether that trajectory lands well depends on whether the governance and investment layers covered in this final chapter keep pace with everything built in the four before it.</p>
+
+<div class="sources">
+<h3>Sources</h3>
+<table>
+  <thead><tr><th>Session</th><th>Time</th><th>Paper status</th></tr></thead>
+  <tbody>
+    <tr><td>AI accelerates biological discovery, are we ready for the risks? (Michelle Holko)</td><td>15:20-15:40, Thursday</td><td>Paper verified</td></tr>
+    <tr><td>Industry workshop: Venture Partner panel (Kristina E. Kitko, Anthony Philippakis, John Keilty)</td><td>15:20-15:50, Tuesday</td><td>No paper (panel, unverified)</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+</div><!-- end content -->
+
+<div class="footer">Built from ISMB 2026 conference session notes. Source material in parent directory.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+const chapters = [
+  { num: 1, title: "Multi-agent orchestration, architectures for teams of specialist agents" },
+  { num: 2, title: "Grounding the agent, retrieval, multi-hop reasoning, and evidence triangulation" },
+  { num: 3, title: "Proving it works, benchmarks, checkpoints, and applied evaluation" },
+  { num: 4, title: "The closing vision, human-AI co-science" },
+  { num: 5, title: "Ontologies and schemas as the shared vocabulary" },
+  { num: 6, title: "Registries, provenance, and quality control" },
+  { num: 7, title: "Structured knowledge in a genAI world" },
+  { num: 8, title: "Embeddings that encode biological context" },
+  { num: 9, title: "Graphs that predict function and interaction" },
+  { num: 10, title: "The limits of network prediction" },
+  { num: 11, title: "FAIR data infrastructure and metadata standards" },
+  { num: 12, title: "Consent, licensing, and sensitive data" },
+  { num: 13, title: "AI in the curation and quality pipeline" },
+  { num: 14, title: "The closing culture debate" },
+  { num: 15, title: "The keynote arc" },
+  { num: 16, title: "Methods and infrastructure" },
+  { num: 17, title: "Risk and money" }
+];
+
+const partChapters = {
+  1: [1, 2, 3, 4],
+  2: [5, 6, 7],
+  3: [8, 9, 10],
+  4: [11, 12, 13, 14],
+  5: [15, 16, 17]
+};
+
+function getPartForChapter(chapterNum) {
+  for (const [part, chs] of Object.entries(partChapters)) {
+    if (chs.includes(chapterNum)) return Number(part);
+  }
+  return 1;
+}
+
+function showChapter(num) {
+  document.querySelectorAll('.chapter').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById('chapter-' + num);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-dropdown a').forEach(a => {
+    a.classList.toggle('active', Number(a.dataset.chapter) === num);
+  });
+
+  const activePart = getPartForChapter(num);
+  document.querySelectorAll('.nav-group').forEach((group, idx) => {
+    group.classList.toggle('has-active-chapter', idx + 1 === activePart);
+  });
+
+  document.querySelectorAll('.nav-group.open').forEach(g => g.classList.remove('open'));
+
+  addChapterNav(num);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  setTimeout(() => {
+    if (target) {
+      mermaid.run({ nodes: target.querySelectorAll('.mermaid') });
+    }
+  }, 50);
+}
+
+function addChapterNav(num) {
+  document.querySelectorAll('.chapter-nav').forEach(el => el.remove());
+
+  const idx = num - 1;
+  const prev = chapters[idx - 1];
+  const next = chapters[idx + 1];
+
+  const nav = document.createElement('div');
+  nav.className = 'chapter-nav';
+
+  if (prev) {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.className = 'chapter-nav-btn prev';
+    a.dataset.chapter = prev.num;
+    a.textContent = '< Ch ' + prev.num + ': ' + prev.title;
+    nav.appendChild(a);
+  } else {
+    const spacer = document.createElement('div');
+    nav.appendChild(spacer);
+  }
+
+  if (next) {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.className = 'chapter-nav-btn next';
+    a.dataset.chapter = next.num;
+    a.textContent = 'Ch ' + next.num + ': ' + next.title + ' >';
+    nav.appendChild(a);
+  }
+
+  const activeChapter = document.getElementById('chapter-' + num);
+  if (activeChapter) activeChapter.appendChild(nav);
+
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      showChapter(Number(a.dataset.chapter));
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-dropdown a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      showChapter(Number(a.dataset.chapter));
+    });
+  });
+
+  document.querySelectorAll('.nav-group-label').forEach(label => {
+    label.addEventListener('click', e => {
+      e.stopPropagation();
+      const group = label.closest('.nav-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.nav-group.open').forEach(g => g.classList.remove('open'));
+      if (!wasOpen) group.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-group.open').forEach(g => g.classList.remove('open'));
+  });
+
+  showChapter(1);
+});
+</script>
+</body>
+</html>
